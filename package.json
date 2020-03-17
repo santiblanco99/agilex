@@ -1,0 +1,14 @@
+{
+  "name": "agilex",
+  "version": "1.0.0",
+  "description": "Proyecto PMC para Universidad de Los Andes. 2020-10",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Santiago Blanco",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
