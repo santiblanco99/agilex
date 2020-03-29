@@ -2,10 +2,9 @@ var indexController = require('./controllers/index');
 const express = require('express')
 const app = express()
 const port = 3000
-const jsdom = require("jsdom");
-const { JSDOM } = jsdom;
-const { document } = (new JSDOM(`...`)).window;
-const {parse} = require('html-dom-parser');
+
+
+
 
 //document.createElement('as', "        ");
 

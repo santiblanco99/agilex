@@ -1,5 +1,6 @@
 
 function init() {
+  
   // Initialize Firebase.
   // TODO: replace with your Firebase project configuration.
   const config = {

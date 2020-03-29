@@ -1,60 +1,152 @@
-<!doctype html>
-<!-- See http://www.firepad.io/docs/ for detailed embedding docs. -->
-<html>
+<!DOCTYPE html>
+<html lang="en">
 
 <head>
-    <meta charset="utf-8" />
-    <!-- Firebase -->
-    <script src="https://www.gstatic.com/firebasejs/5.5.4/firebase.js"></script>
-    <!-- CodeMirror -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.17.0/codemirror.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.17.0/codemirror.css" />
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- Firepad -->
-    <link rel="stylesheet" href="https://firepad.io/releases/v1.5.9/firepad.css" />
-    <script src="https://firepad.io/releases/v1.5.9/firepad.min.js"></script>
 
-    <!-- Include example userlist script / CSS.
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/5.5.4/firebase.js"></script>
+
+  <!-- CodeMirror -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.17.0/codemirror.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.17.0/codemirror.css" />
+
+  <!-- Firepad -->
+  <link rel="stylesheet" href="https://firepad.io/releases/v1.5.9/firepad.css" />
+  <script src="https://firepad.io/releases/v1.5.9/firepad.min.js"></script>
+
+  <!-- Popper JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+
+
+  <!-- bootstrap -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+
+
+  <!-- React -->
+  <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
+
+  <!--JQuery-->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+
+  <!-- Include example userlist script / CSS.
     Can be downloaded from: https://github.com/firebase/firepad/tree/master/examples/ -->
-    <script src="./javascripts/firepad-userlist.js"></script>
-    <link rel="stylesheet" href="./stylesheets/firepad-userlist.css" />
-    <link rel="stylesheet" href="style.css">
-    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+  <script src="./javascripts/firepad-userlist.js"></script>
+  <link rel="stylesheet" href="./stylesheets/firepad-userlist.css" />
 
-    <script src="https://unpkg.com/html-dom-parser@latest/dist/html-dom-parser.js"></script>
+  <!-- general index stylesheet -->
+  <link rel="stylesheet" href="./stylesheets/index.css">
 
-    <!-- general index stylesheet -->
-    <link rel="stylesheet" href="./stylesheets/index.css">
+  <style>
+    /* Remove the navbar's default margin-bottom and rounded borders */
+    .navbar {
+      margin-bottom: 0;
+      border-radius: 0;
+    }
+    .navbar>.container .navbar-brand, .navbar>.container-fluid .navbar-brand
+    {
+      margin-left: -30px;
+    }
+    .navbar-inverse {
+      background-color: rgb(255, 217, 52);
+      border-color: rgb(255, 217, 52);
+    }
 
+    .glyphicon-user {
+      color: rgb(0, 0, 0);
+    }
+
+    .nav.navbar-nav.navbar-right li a {
+      color: black;
+    }
+
+    /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
+    .row.content {
+      height: 450px
+    }
+
+    /* Set gray background color and 100% height */
+    .sidenav {
+      padding-top: 20px;
+      background-color: #f1f1f1;
+      height: 100%;
+    }
+
+    /* Set black background color, white text and some padding */
+    footer {
+      background-color: rgb(85, 85, 85);
+      color: white;
+      padding: 15px;
+    }
+
+    /* On small screens, set height to 'auto' for sidenav and grid */
+    @media screen and (max-width: 767px) {
+      .sidenav {
+        height: auto;
+        padding: 15px;
+      }
+
+      .row.content {
+        height: auto;
+      }
+    }
+  </style>
 </head>
-
-
-<!-- <body onload="init()">
-    <div id="userlist"></div>
-    <div id="firepad"></div>
-    
-</body> -->
-
-
-<!-- <script src="./javascripts/index.js"></script> -->
 
 <body onload="init()">
 
-    
-    <div id="userlist" ></div>
-    <div id="firepad" ></div>
-    <div id='score'  >
+  <div id='score'>
+    <nav class="navbar navbar-inverse">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">
+            <img
+              src="https://static.wixstatic.com/media/8d6d14_9937419eb0b346b2850d28aea7a94d38~mv2.png/v1/fill/w_175,h_72,al_c,q_85,usm_0.66_1.00_0.01/Logo%20Agilex.webp"
+              width="150" height="50" alt="">
+          </a>
+        </div>
+        <div class="collapse navbar-collapse" id="myNavbar">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="#"><span class="glyphicon glyphicon-user"></span> usuario</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </div>
 
-    </div>
-    <!-- <div id="like_button_container"></div> -->
+  <div id="userlist">
+    <img
+      src="https://static.wixstatic.com/media/8d6d14_9937419eb0b346b2850d28aea7a94d38~mv2.png/v1/fill/w_175,h_72,al_c,q_85,usm_0.66_1.00_0.01/Logo%20Agilex.webp"
+      width="150" height="50" style="top:100px;">
+    </a>
+  </div>
+  <div id="firepad">
+    <nav class="navbar navbar-dark bg-dark">
+      <div class="container-fluid">
+        <div class="collapse navbar-collapse" id="myNavbar">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="#"><span class="glyphicon glyphicon-user"></span> usuario</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </div>
 
-    <!-- Load React. -->
-    <!-- Note: when deploying, replace "development.js" with "production.min.js". -->
-    <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
-    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
 
-    <!-- Load our React component. -->
-    <script src="like_button.js"></script>
+
+  <!--</div>-->
+
 
 </body>
 <script src="./javascripts/index.js"></script>
