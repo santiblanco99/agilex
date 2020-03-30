@@ -42,6 +42,7 @@
 
   <!-- general index stylesheet -->
   <link rel="stylesheet" href="./stylesheets/index.css">
+  
 
   <style>
     /* Remove the navbar's default margin-bottom and rounded borders */
@@ -61,7 +62,11 @@
     .glyphicon-user {
       color: rgb(0, 0, 0);
     }
-
+    .glyphicon-plus-sign
+    {
+      color:seagreen;
+      font-size: 50px;
+    }
     .nav.navbar-nav.navbar-right li a {
       color: black;
     }
@@ -97,10 +102,10 @@
       }
     }
   </style>
+
 </head>
 
 <body onload="init()">
-
   <div id='score'>
     <nav class="navbar navbar-inverse">
       <div class="container-fluid">
@@ -123,6 +128,8 @@
         </div>
       </div>
     </nav>
+    <span class = "glyphicon glyphicon-plus-sign" onclick="newDocum()">
+    </span>
   </div>
 
   <div id="userlist">

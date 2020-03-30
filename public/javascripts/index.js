@@ -16,9 +16,15 @@ function init() {
   document.getElementById('userlist').style.display = "none";
 
   //Hacer indice
-  firebase.database().ref().on('value', gotData, errData);
+  firebase.database().ref('/datas').on('value', gotData, errData);
 }
 
+function newDocum(){
+  var ref = firebase.database().ref('/datas');
+  ref = ref.push(); // generate unique location.
+  window.location = window.location + '#' + ref.key; // add it as a hash to the URL.
+  goTo(ref.key);
+}
 function goTo(idDocumento) {
   //Desaparecer indice
   document.getElementById('score').style.display = "none";
@@ -84,7 +90,7 @@ function errData(snapshot) {
 
 // Helper to get hash from end of URL or generate a random one.
 function getExampleRef(idDocumento) {
-  var ref = firebase.database().ref();
+  var ref = firebase.database().ref('/datas');
   window.location =  '#' + idDocumento;
   var hash = window.location.hash.replace(/#/g, '');
   
