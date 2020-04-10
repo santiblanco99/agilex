@@ -1,6 +1,6 @@
 a.firepad-btn, a.firepad-btn:visited, a.firepad-btn:active {
-  background-color:  rgb(44, 44, 43);
-  border: 1px solid  rgb(44, 44, 43);
+  background-color:  rgb(51, 50, 49);
+  border: 1px solid  rgb(51, 50, 49);
   border-bottom-width: 4px;
   color: white ;
 }
@@ -9,16 +9,17 @@ a.firepad-btn, a.firepad-btn:visited, a.firepad-btn:active {
     height: 400px;
     min-width: 175px;
   
-    background: rgb(44, 44, 43); /* Old browsers */
-    background: -moz-linear-gradient(left, rgb(44, 44, 43) 0%, rgb(44, 44, 43) 93%, rgb(44, 44, 43) 100%); /* FF3.6+ */
-    background: -webkit-gradient(linear, left top, right top, color-stop(0%,rgb(44, 44, 43)), color-stop(93%,rgb(44, 44, 43)), color-stop(100%,rgb(44, 44, 43))); /* Chrome,Safari4+ */
-    background: -webkit-linear-gradient(left, rgb(44, 44, 43) 0%,rgb(44, 44, 43) 93%,rgb(44, 44, 43) 100%); /* Chrome10+,Safari5.1+ */
-    background: -o-linear-gradient(left, rgb(44, 44, 43) 0%,rgb(44, 44, 43) 93%,rgb(44, 44, 43) 100%); /* Opera 11.10+ */
-    background: -ms-linear-gradient(left, rgb(44, 44, 43) 0%,rgb(44, 44, 43) 93%,rgb(44, 44, 43) 100%); /* IE10+ */
-    background: linear-gradient(to right, rgb(44, 44, 43) 0%,rgb(44, 44, 43) 93%,rgb(44, 44, 43) 100%); /* W3C */
-    color: #404040;
+    background: rgb(51, 50, 49); /* Old browsers */
+    background: -moz-linear-gradient(left, rgb(51, 50, 49) 0%, rgb(51, 50, 49) 93%, rgb(51, 50, 49) 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, right top, color-stop(0%,rgb(51, 50, 49)), color-stop(93%,rgb(51, 50, 49)), color-stop(100%,rgb(51, 50, 49))); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(left, rgb(51, 50, 49) 0%,rgb(51, 50, 49) 93%,rgb(51, 50, 49) 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(left, rgb(51, 50, 49) 0%,rgb(51, 50, 49) 93%,rgb(51, 50, 49) 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(left, rgb(51, 50, 49) 0%,rgb(51, 50, 49) 93%,rgb(51, 50, 49) 100%); /* IE10+ */
+    background: linear-gradient(to right, rgb(51, 50, 49) 0%,rgb(51, 50, 49) 93%,rgb(51, 50, 49) 100%); /* W3C */
+    color: #333231;
+    /*  */
   }
-  
+
   .firepad-userlist {
     text-align: left;
     font-family: 'Helvetica Neue', sans-serif;
@@ -47,7 +48,7 @@ a.firepad-btn, a.firepad-btn:visited, a.firepad-btn:active {
     position: relative;
     margin: 3px 0;
     height: 32px;
-    border-bottom: 1px solid rgb(44, 44, 43); 
+    border-bottom: 1px solid rgb(51, 50, 49);
     padding-bottom: 5px;
   }
   

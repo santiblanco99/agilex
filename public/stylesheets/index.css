@@ -10,7 +10,7 @@ body {
 /* Height / width / positioning can be customized for your use case.
 For demo purposes, we make the user list 175px and firepad fill the rest of the page. */
 #userlist {
-    background-color: rgb(44, 44, 43);
+    background-color: rgb(51, 50, 49);
     position: absolute;
     left: 0;
     top: 0;
@@ -18,9 +18,9 @@ For demo purposes, we make the user list 175px and firepad fill the rest of the 
     height: auto;
     width: 175px;
 }
-
+/* 44-44-43  */
 #firepad {
-    background-color: rgb(44, 44, 43);
+    background-color: rgb(255, 205, 77);
     position: absolute;
     left: 175px;
     top: 0;
