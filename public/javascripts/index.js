@@ -38,12 +38,12 @@ function goTo(idDocumento) {
   var codeMirror = CodeMirror(document.getElementById('firepad'), { lineWrapping: true });
 
   // Create a random ID to use as our user ID (we must give this to firepad and FirepadUserList).
-  var userId = Math.floor(Math.random() * 9999999999).toString();
-
+ // var userId = Math.floor(Math.random() * 9999999999).toString();
+ var userId ="YOKAS"+Math.floor(Math.random() * 9999999999).toString();
   // Create Firepad (with rich text features and our desired userId).
   var firepad = Firepad.fromCodeMirror(firepadRef, codeMirror,
-    { richTextToolbar: true, richTextShortcuts: true, userId: userId });
-
+    { richTextToolbar: true, richTextShortcuts: true, userId: userId, defaultText: userId });
+    firepad.setUserId(userId);
   // Create FirepadUserList (with our desired userId).
   var firepadUserList = FirepadUserList.fromDiv(firepadRef.child('users'),
 
@@ -80,6 +80,7 @@ function gotData(snapshot) {
     if (li != null)
       document.getElementById("score").appendChild(li);
   }
+ 
 
 }
 function errData(snapshot) {
