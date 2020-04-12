@@ -25,6 +25,7 @@
     "react-dom": "^16.13.1",
     "react-flexbox-grid": "^2.1.2",
     "react-habitat": "^1.0.1",
+    "react-router-dom": "^5.1.2",
     "react-stack-grid": "^0.7.1",
     "window": "^4.2.7"
   },

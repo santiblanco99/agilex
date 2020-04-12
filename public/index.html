@@ -3,197 +3,158 @@
 <html lang="en">
 
 <head>
-  <title>Bootstrap Example</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Agilex</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/x-icon" href="./favicon.ico">
+    <link rel="stylesheet" href="./stylesheets/index.css">
 
+    <!-- React -->
+    <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
 
-  <!-- Firebase -->
-  <script src="https://www.gstatic.com/firebasejs/5.5.4/firebase.js"></script>
+    <!--JQuery-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
-  <!-- CodeMirror -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.17.0/codemirror.js"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.17.0/codemirror.css" />
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/5.5.4/firebase.js"></script>
 
-  <!-- Firepad -->
-  <link rel="stylesheet" href="https://firepad.io/releases/v1.5.9/firepad.css" />
-  <script src="https://firepad.io/releases/v1.5.9/firepad.min.js"></script>
+    <!-- CodeMirror -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.17.0/codemirror.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.17.0/codemirror.css" />
 
-  <!-- Popper JS -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+    <!-- Firepad -->
+    <link rel="stylesheet" href="https://firepad.io/releases/v1.5.9/firepad.css" />
+    <script src="https://firepad.io/releases/v1.5.9/firepad.min.js"></script>
 
+    <!-- Popper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
 
-  <!-- bootstrap -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <!-- bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
 
-
-  <!-- React -->
-  <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
-  <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
-
-  <!--JQuery-->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-
-
-  <!-- Include example userlist script / CSS.
+    <!-- Include example userlist script / CSS.
     Can be downloaded from: https://github.com/firebase/firepad/tree/master/examples/ -->
-  <script src="./javascripts/firepad-userlist.js"></script>
-  <link rel="stylesheet" href="./stylesheets/firepad-userlist.css" />
+    <script src="./javascripts/firepad-userlist.js"></script>
+    <link rel="stylesheet" href="./stylesheets/firepad-userlist.css" />
 
-  <!-- general index stylesheet -->
-  <link rel="stylesheet" href="./stylesheets/index.css">
-  
-
-  <style>
-    /* Remove the navbar's default margin-bottom and rounded borders */
-    .navbar {
-      margin-bottom: 0;
-      border-radius: 0;
-    }
-    .navbar>.container .navbar-brand, .navbar>.container-fluid .navbar-brand
-    {
-      margin-left: -30px;
-    }
-    .navbar-inverse {
-      background-color: rgb(255, 205, 77);
-      border-color: rgb(255, 205, 77);
-    }
-    .glyphicon-user {
-      color: rgb(0, 0, 0);
-    }
-
-    .glyphicon-plus-sign
-    {
-      color:seagreen;
-      font-size: 50px;
-    }
-    .nav.navbar-nav.navbar-right li a {
-      color: black;
-    }
-
-    /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
-    .row.content {
-      height: 450px
-    }
-
-    /* Set gray background color and 100% height */
-    .sidenav {
-      padding-top: 20px;
-      background-color: #f1f1f1;
-      height: 100%;
-    }
-
-    /* Set black background color, white text and some padding */
-    footer {
-      background-color: rgb(51, 50, 49);
-      color: orange;
-      padding: 15px;
-    }
-
-    /* On small screens, set height to 'auto' for sidenav and grid */
-    @media screen and (max-width: 767px) {
-      .sidenav {
-        height: auto;
-        padding: 15px;
-      }
-
-      .row.content {
-        height: auto;
-      }
-    }
-  </style>
+    <style>
+        /* Remove the navbar's default margin-bottom and rounded borders */
+        
+        .navbar {
+            margin-bottom: 0;
+            border-radius: 0;
+        }
+        
+        .navbar>.container .navbar-brand,
+        .navbar>.container-fluid .navbar-brand {
+            margin-left: 30px;
+        }
+        
+        .navbar-inverse {
+            background-color: rgb(255, 205, 77);
+            border-color: rgb(255, 205, 77);
+            height: 90px;
+        }
+        
+        .glyphicon-user {
+            color: rgb(0, 0, 0);
+        }
+        
+        .glyphicon-plus-sign {
+            color: seagreen;
+            font-size: 50px;
+        }
+        
+        .nav.navbar-nav.navbar-right li a {
+            color: black;
+        }
+        /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
+        
+        .row.content {
+            height: 450px
+        }
+        /* Set gray background color and 100% height */
+        
+        .sidenav {
+            padding-top: 20px;
+            background-color: #f1f1f1;
+            height: 100%;
+        }
+        /* Set black background color, white text and some padding */
+        
+        footer {
+            background-color: rgb(51, 50, 49);
+            color: orange;
+            padding: 15px;
+        }
+        /* On small screens, set height to 'auto' for sidenav and grid */
+        
+        @media screen and (max-width: 767px) {
+            .sidenav {
+                height: auto;
+                padding: 15px;
+            }
+            .row.content {
+                height: auto;
+            }
+        }
+    </style>
 
 </head>
 
 <body onload="init()">
-  <div id='score'>
-    <nav class="navbar navbar-inverse">
-      <div class="container-fluid">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="#">
-            <img
-              src="https://static.wixstatic.com/media/8d6d14_9937419eb0b346b2850d28aea7a94d38~mv2.png/v1/fill/w_175,h_72,al_c,q_85,usm_0.66_1.00_0.01/Logo%20Agilex.webp"
-              width="350" height="150" alt="">
-          </a>
+    <div id='score'>
+        <nav class="navbar navbar-expand-lg navbar-inverse">
+            <a class="navbar-brand" href="#">
+                <img src="./imagenes/Agilex-Logo.png" width="150" height="60" alt="">
+            </a>
+        </nav>
+
+        <br>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col md-2">
+                    <a>
+                        <span onclick="newDocum()">
+                        <img src="./imagenes/plus.png" alt="plus" border="0" width="90" height="90">
+                        </span>
+                    </a>
+                </div>
+            </div>
         </div>
-        <div class="collapse navbar-collapse" id="myNavbar">
-          <ul class="nav navbar-nav navbar-right">
-            <li><a href="#"><span class="glyphicon glyphicon-user"></span> usuario</a></li>
-          </ul>
-        </div>
-      </div>
-    </nav>
-    <span class = "style: background-image:url(https://i.ibb.co/3fvFMW5/plus.png)" onclick="newDocum()">
-      <img src="https://i.ibb.co/3fvFMW5/plus.png" alt="plus" border="0" width="90" height="90"></a>
-    </span>
-    <span class = "style: background-image:url(https://i.ibb.co/p349X8C/folder.png)" onclick="newDocum()">
-     <img src="https://i.ibb.co/p349X8C/folder.png" alt="folder" border="0" width="90" height="90"></a>
-    </span>
-    <span class = "style: background-image:url(https://i.ibb.co/p349X8C/folder.png)" onclick="newDocum()">
-     <img src="https://i.ibb.co/p349X8C/folder.png" alt="folder" border="0" width="90" height="90"></a>
-    </span>
-    <span class = "style: background-image:url(https://i.ibb.co/sPwHGZ4/file.png)" onclick="newDocum()">
-      <img src="https://i.ibb.co/sPwHGZ4/file.png" alt="file" border="0" width="90" height="90"></a>
-    </span>
-    <span class = "style: background-image:url(https://i.ibb.co/sPwHGZ4/file.png)" onclick="newDocum()">
-      <img src="https://i.ibb.co/sPwHGZ4/file.png" alt="file" border="0" width="90" height="90"></a>
-    </span>
-    <span class = "style: background-image:url(https://i.ibb.co/sPwHGZ4/file.png)" onclick="newDocum()">
-      <img src="https://i.ibb.co/sPwHGZ4/file.png" alt="file" border="0" width="90" height="90"></a>
-    </span>
 
-  </div>
+    </div>
 
-  <div id="userlist">
-    <a href="https://ibb.co/SKbdN0v"><img src="https://i.ibb.co/SKbdN0v/Captura-de-Pantalla-2020-04-09-a-la-s-5-45-55-p-m.png" alt="Captura-de-Pantalla-2020-04-09-a-la-s-5-45-55-p-m" border="0" width="175" height="140"></a>
-  </div>
+    <div id="userlist">
+        <a href="#">
+            <img src="./imagenes/Agilex-blanco.png" width="150" height="85">
+        </a>
+    </div>
 
-  <div id="firepad">
-    <nav class="navbar navbar-dark bg-dark">
-      <div class="container-fluid">
-        <div class="collapse navbar-collapse" id="myNavbar">
-          <table class="table table-responsive">
-            <tbody>
-            <tr>
-              <td>
-                <a href="https://ibb.co/p349X8C"><img src="https://i.ibb.co/p349X8C/folder.png" alt="folder" border="0" width="50" height="50"></a>
-              </td>
-              <td>
-                <a href="https://ibb.co/FK4tdvR"><img src="https://i.ibb.co/FK4tdvR/tick.png" alt="tick" border="0" width="50" height="50"></a>
-              </td>
-              <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-              <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-              <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-              <td>
-                <ul class="nav navbar-nav navbar-right"><li><a href="#"><span class="glyphicon glyphicon-user"></span>usuario</a></li></ul>
-              </td>
-            </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </nav>
-  </div>
+    <div id="firepad">
+        <nav class="navbar navbar-dark bg-dark">
+            <div class="container-fluid">
+                <div class="collapse navbar-collapse" id="myNavbar">
+                    <table class="table table-responsive">
+                        <tbody>
+                            <tr>
+                                <ul class="nav navbar-nav navbar-right">
+                                    <li><a href="#"><span class="glyphicon glyphicon-user"></span>usuario</a></li>
+                                </ul>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </nav>
+    </div>
 
 
-
-
-
-
-
-
-
-
-
-
-
-  <!--</div>-->
+    <!--</div>-->
 
 
 </body>
