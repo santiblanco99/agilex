@@ -46,3 +46,4 @@ class Login extends Component  {
             <Button variant="primary" type="submit">Ingresar</Button>
           </Form> )
     }
+};
