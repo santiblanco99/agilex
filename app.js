@@ -1,4 +1,4 @@
-import React from "react";
+const React = require('react');
 
 const express = require('express');
 const app = express();
