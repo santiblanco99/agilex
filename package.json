@@ -1,36 +1,23 @@
 {
   "name": "agilex",
   "version": "1.0.0",
-  "description": "Proyecto PMC para Universidad de Los Andes. 2020-10",
+  "description": "safe collaborative text editor",
   "main": "app.js",
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Santiago Blanco",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/santiblanco99/agilex.git"
+  },
+  "author": "Santiago Blanco, Natalia Sanabria, Julio Morales, Andrea Montoya, Lily Duque",
   "license": "ISC",
-  "dependencies": {
-    "bootstrap": "^4.4.1",
-    "express": "^4.17.1",
-    "firebase": "^7.13.1",
-    "firebase-admin": "^8.10.0",
-    "html-dom-parser": "^0.2.3",
-    "jquery": "^3.4.1",
-    "jsdom": "^16.2.1",
-    "p5": "^1.0.0",
-    "react": "^16.13.1",
-    "react-bootstrap": "^1.0.0",
-    "react-dom": "^16.13.1",
-    "react-flexbox-grid": "^2.1.2",
-    "react-habitat": "^1.0.1",
-    "react-router-dom": "^5.1.2",
-    "react-stack-grid": "^0.7.1",
-    "window": "^4.2.7"
+  "bugs": {
+    "url": "https://github.com/santiblanco99/agilex/issues"
   },
-  "devDependencies": {
-    "webpack": "^4.42.1",
-    "webpack-cli": "^3.3.11"
+  "homepage": "https://github.com/santiblanco99/agilex#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "firebase-admin": "^8.10.0"
   }
 }
