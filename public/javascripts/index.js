@@ -66,7 +66,7 @@ function gotData(snapshot) {
         var button = document.createElement("img");
 
 
-        button.setAttribute("src", "https://www.pinclipart.com/picdir/middle/357-3572972_submit-your-application-documento-png-clipart.png");
+        button.setAttribute("src", "./../imagenes/file.png");
         button.setAttribute("height", "50");
         button.innerHTML = keys[i];
         p.setAttribute("style", "line-height:50px;");
