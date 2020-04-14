@@ -2,12 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 //Firestore initialization
-const admin = require('firebase-admin');
-let serviceAccount = require('../firebase-key.json');
-admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount)
-});
-let db = admin.firestore();
+const db = require('./firestore');
 
 
 //ROOT
