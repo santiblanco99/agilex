@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Router} from '@angular/router';
 import {NgxRolesService, NgxPermissionsService} from 'ngx-permissions'
-import 'rxjs/add/operator/catch';
+import {catchError} from'rxjs/operators'
 
 /**
  * The service provider for everything related to authentication

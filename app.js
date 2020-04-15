@@ -1,7 +1,10 @@
 const express = require('express');
 var app = express();
 var routes = require('./routes/initialRoutes');
+const cors = require('cors');
 
+
+app.use(cors());
 
 //Using routes
 

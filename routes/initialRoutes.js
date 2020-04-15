@@ -21,14 +21,19 @@ router.get('/', async (req,res)=> {
 
 });
 
-router.get('/data', async (req,res)=>{
+router.get('/documents', async (req,res)=>{
 
-    db.collection('users').get()
+    db.collection('documents').get()
     .then((snapshot) => {
+      var resp = [];
       snapshot.forEach((doc) => {
         console.log(doc.id, '=>', doc.data());
-        res.send(snapshot.docs[0]);
+        var document = doc.data();
+        document.id = doc.id;
+        console.log(document);
+        resp.push(document);
       });
+      res.send(resp);
     })
     .catch((err) => {
       console.log('Error getting documents', err);
