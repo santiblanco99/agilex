@@ -14,6 +14,7 @@ export class DocumentsComponent implements OnInit {
   documents: Doc[];
 
   ngOnInit(): void {
+    console.log('loading docs');
     this.documentService.getDocuments().subscribe(docs=>{
       console.log(docs);
       this.documents = docs;

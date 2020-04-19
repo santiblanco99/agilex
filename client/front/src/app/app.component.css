@@ -9,3 +9,43 @@ footer {
     left: 0;
     right: 0;
   }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    margin: 8px 0;
+  }
+
+  p {
+    margin: 0;
+  }
+
+  .spacer {
+    flex: 1;
+  }
+  
+
+  .navbar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    background-color: #FFCD4D;
+    color: white;
+    font-weight: 600;
+  }
+
+  .navbar img {
+    margin: 0 16px;
+  }
+
+  svg.material-icons {
+    height: 24px;
+    width: auto;
+  }
