@@ -1,17 +1,19 @@
-<div *ngFor="let doc of documents">
-    <h3>Componente de prueba para integrar backend:</h3>
-    <p>Name: {{doc.name}}</p>
-    <p>Author: {{doc.author}}</p>
-    <p>Id: {{doc.id}}</p>
+<div class="jumbotron">
+    <h2>Mis documentos</h2>
 </div>
-<h1>ahsdajkdashd</h1>
-<h1>ahsdajkdashd</h1>
-<h1>ahsdajkdashd</h1>
-<h1>ahsdajkdashd</h1>
-<h1>ahsdajkdashd</h1>
-<h1>ahsdajkdashd</h1>
-<h1>ahsdajkdashd</h1>
-<h1>ahsdajkdashd</h1>
-<h1>ahsdajkdashd</h1>
-<h1>ahsdajkdashd</h1>
-<h1>ahsdajkdashd</h1>
+<div class="card-group">
+    <div class="card text-center">
+        <img class="card-img-top img-fluid" src="./../../../assets/plus.png" alt="Card image cap">
+        <div class="card-body">
+            <a class="card-link" [routerLink]="['newDocument']" >Crear nuevo</a>
+        </div>
+    </div>
+    <div class="card text-center" *ngFor="let doc of documents">
+        <img class="card-img-top" src="./../../../assets/file.png" alt="Card image cap">
+        <div class="card-body">
+          <p class="card-text">{{doc.name}}</p>
+          <p class="card-text"><small class="text-muted">Última actualización hace 3 minutos</small></p>
+        </div>
+      </div>
+</div>
+

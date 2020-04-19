@@ -4,4 +4,5 @@ export class Doc {
     id: String;
     name: String;
     author: String;
+    content: String;
 }

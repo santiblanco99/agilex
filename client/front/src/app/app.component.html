@@ -1,12 +1,21 @@
+<div class="main-container">
+  <nav class="navbar">
+    <a class="navbar-brand" href="/">
+      <img src="./../assets/Agilex Logo.png" width="150">
+    </a>
+    <a routerLink='newDocument'>Crear nuevo documento</a>
+  </nav>
 
-<nav class="navbar">
-  <a class="navbar-brand" href="/">
-    <img src="./../assets/Agilex Logo.png" width="150">
-  </a>
-  <a routerLink='newDocument'>Create a document</a>
-</nav>
+  <br>
+  <br>
+  <br>
+  <br>
 
-<!-- Footer -->
+<div>
+  <router-outlet></router-outlet>
+</div>
+
+  <!-- Footer -->
   <footer class="page-footer special-color-dark" id="footer">
     <div class="container">
       <p class="navbar-text text-center">
@@ -16,5 +25,4 @@
       </p>
     </div>
   </footer>
-
-  <router-outlet></router-outlet>
+</div>

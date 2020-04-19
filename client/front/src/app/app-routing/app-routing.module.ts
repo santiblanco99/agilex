@@ -8,6 +8,7 @@ import {HomeComponent} from'../components/home/home.component';
 import {EditorComponent} from '../components/editor/editor.component';
 import { AuthLoginComponent } from '../auth/auth-login/auth-login.component';
 import { AuthSignUpComponent } from '../auth/auth-signup/auth-signup.component';
+import { Error404Component } from '../components/error404/error404.component';
 
 const routes : Routes = [
     {
@@ -46,6 +47,10 @@ const routes : Routes = [
     {
         path:'documents',
         component: DocumentsComponent
+    },
+    {
+        path: '**',
+        component: Error404Component
     }
 
 ]

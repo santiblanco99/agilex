@@ -11,6 +11,7 @@ import { AuthSignUpComponent } from './auth/auth-signup/auth-signup.component';
 import { DocumentsComponent } from './components/documents/documents.component';
 import { EditorComponent } from './components/editor/editor.component';
 import { HomeComponent } from './components/home/home.component';
+import { Error404Component } from './components/error404/error404.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,9 @@ import { HomeComponent } from './components/home/home.component';
     AuthLoginComponent,
     DocumentsComponent,
     EditorComponent,
-    HomeComponent
+    HomeComponent,
+    AuthSignUpComponent,
+    Error404Component
   ],
   imports: [
     BrowserModule,
