@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import {HttpClientModule} from '@angular/common/http';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import {FormsModule} from '@angular/forms';
-
+import { CommonModule } from '@angular/common';  
 
 import { AppComponent } from './app.component';
 import { AuthLoginComponent } from './auth/auth-login/auth-login.component';
@@ -29,7 +29,8 @@ import { Error404Component } from './components/error404/error404.component';
     HttpClientModule,
     CKEditorModule,
     AppRoutingModule,
-    FormsModule
+    FormsModule,
+    CommonModule
   ],
   providers: [],
   bootstrap: [AppComponent]

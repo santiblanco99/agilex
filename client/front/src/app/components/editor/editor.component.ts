@@ -4,6 +4,7 @@ import { CloudServicesConfig } from './common-interfaces';
 import { CKEditor5, ChangeEvent } from '@ckeditor/ckeditor5-angular';
 import { DocumentService } from 'src/app/services/document.service.js';
 import { Doc } from 'src/app/models/document.js';
+import { CommonModule } from '@angular/common';
 
 @Component({
 	selector: 'app-editor',
@@ -57,7 +58,7 @@ export class EditorComponent {
 			this.dataReady = true;
 		});
 	}
-	
+
 	public onChange({ editor }: ChangeEvent) 
 	{
 		this.currentState = editor.getData();

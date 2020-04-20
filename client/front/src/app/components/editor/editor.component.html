@@ -1,5 +1,10 @@
-<div *ngIf="dataReady">
-    <button (click)='onClicked()'>Save</button>
+<div class-="body" *ngIf="dataReady">
+<div class="row">
+    <div class="col-md-1">
+        <button type="button" class="btn btn-primary" (click)='onClicked()'>Guardar</button>
+    </div>
+</div> 
+<br>
     <ckeditor [editor]="Editor" [config] = 'config' [(data)]='data' (change)="onChange($event)"></ckeditor>
     <br>
     <br>
@@ -7,8 +12,9 @@
         <div class="col-md-11">
         </div>
         <div class="col-md-1">
-            <button type="button" class="btn btn-success" (click)="block()">Aceptar</button>
+            <button type="button" class="btn btn-success" (click)="accept()">Aceptar</button>
         </div>
     </div>
+    <br>
 </div>
 

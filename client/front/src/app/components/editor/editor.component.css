@@ -589,7 +589,17 @@ footer {
 	  background: #fff;
 	}
 
-	.btn{
+	.btn-success{
 		background-color: green;
 		color: white;
+	}
+
+	.btn-primary{
+		background-color: #1E90FF;
+		color: white;
+	}
+
+	.body{
+		padding-left: 80px;
+		padding-right: 80px;
 	}
