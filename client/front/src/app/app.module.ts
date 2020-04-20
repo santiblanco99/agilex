@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import {HttpClientModule} from '@angular/common/http';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
+import {FormsModule} from '@angular/forms';
 
 
 import { AppComponent } from './app.component';
@@ -27,7 +28,8 @@ import { Error404Component } from './components/error404/error404.component';
     BrowserModule,
     HttpClientModule,
     CKEditorModule,
-    AppRoutingModule
+    AppRoutingModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
