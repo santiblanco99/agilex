@@ -1,1 +1,5 @@
-<ckeditor [editor]="Editor" [config] = 'config' [data]="data"></ckeditor>
+<div *ngIf="dataReady">
+    <button (click)='onClicked()'>Save</button>
+    <ckeditor [editor]="Editor" [config] = 'config' [(data)]='data' (change)="onChange($event)"></ckeditor>
+</div>
+
