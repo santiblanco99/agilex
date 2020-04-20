@@ -1,5 +1,14 @@
 <div *ngIf="dataReady">
     <button (click)='onClicked()'>Save</button>
     <ckeditor [editor]="Editor" [config] = 'config' [(data)]='data' (change)="onChange($event)"></ckeditor>
+    <br>
+    <br>
+    <div class="row">
+        <div class="col-md-11">
+        </div>
+        <div class="col-md-1">
+            <button type="button" class="btn btn-success" (click)="block()">Aceptar</button>
+        </div>
+    </div>
 </div>
 

@@ -57,11 +57,14 @@ export class EditorComponent {
 			this.dataReady = true;
 		});
 	}
-	public onChange({ editor }: ChangeEvent) {
+	
+	public onChange({ editor }: ChangeEvent) 
+	{
 		this.currentState = editor.getData();
 
 		console.log(this.currentState);
 	}
+
 	onClicked() {
 		if(this.currentState==null){
 			this.currentState = this.data;
@@ -70,6 +73,12 @@ export class EditorComponent {
 		this.documentService.postDocument(doc).subscribe(result => {
 			console.log('posted ' + result.id);
 		});
+	}
+
+	accept()
+	{
+		this.onClicked();
+		Editor.lock();
 	}
 }
 
