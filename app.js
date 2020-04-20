@@ -1,6 +1,6 @@
 const express = require('express');
 var app = express();
-var routes = require('./routes/initialRoutes');
+var documentRoutes = require('./routes/documents');
 var userRoutes = require('./routes/users');
 const cors = require('cors');
 var bodyParser = require('body-parser');
@@ -12,7 +12,7 @@ app.use(bodyParser.json());
 //Using routes
 
 //Read data ex
-app.use('/',routes);
+app.use('/documents',documentRoutes);
 app.use('/users',userRoutes);
 
 

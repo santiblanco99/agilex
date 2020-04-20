@@ -5,23 +5,9 @@ const router = express.Router();
 const db = require('./firestore');
 
 
-//ROOT
-router.get('/', async (req,res)=> {
-    //ejemplo de uso de firestore
-    let docRef = db.collection('users').doc('alovelace');
-    let setAda =  await docRef.set({
-        first: 'Ada',
-        last: 'Lovelace',
-        born: 1815
-    });
-    console.log(setAda);
-
-    res.send('Home page working');
 
 
-});
-
-router.get('/documents', async (req,res)=>{
+router.get('/', async (req,res)=>{
 
     db.collection('documents').get()
     .then((snapshot) => {
@@ -40,7 +26,7 @@ router.get('/documents', async (req,res)=>{
     });
 });
 
-router.post('/documents', async (req,res)=>{
+router.post('/', async (req,res)=>{
   console.log(req.body);
 
 let docRef = db.collection('documents').doc();
@@ -61,7 +47,7 @@ res.json(resp);
 
 });
 
-router.get('/documents/:id',  async function(req,res){
+router.get('/:id',  async function(req,res){
   var id = req.params.id;
   console.log(id);
   var docu = db.collection('documents').doc(id);

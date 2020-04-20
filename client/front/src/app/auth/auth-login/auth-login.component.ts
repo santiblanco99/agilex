@@ -31,6 +31,7 @@ export class AuthLoginComponent implements OnInit {
             this.router.navigate(['']);
         }, (err) =>{
             console.log(err);
+            alert('Credenciales invalidas');
 
             console.log(err.error.error.message);
         })
