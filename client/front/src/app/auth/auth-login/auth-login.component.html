@@ -3,14 +3,14 @@
         <br>
         <h2 class="text-center">Login</h2>
         <br>
-        <form name="login">
+        <form name="login" (ngSubmit)="onSubmit(f)" #f="ngForm">
             <div class="form-group">
-                <label for="username"><b>Correo electrónico</b></label>
-                <input type="text" name="username" class="form-control" id="username" required>
+                <label for="email"><b>Correo electrónico</b></label>
+                <input type="email" name="email" class="form-control" id="email" required [(ngModel)]="user.email">
             </div>
             <div class="form-group">
                 <label for="password"><b>Contraseña</b></label>
-                <input type="text" name="password" class="form-control" id="password" required>
+                <input type="text" name="password" class="form-control" id="password" required [(ngModel)]="user.password">
             </div>
             <div class="justify-content-center align-self-center">
                 <button type="submit" class="btn btn-primary">Ingresar</button>

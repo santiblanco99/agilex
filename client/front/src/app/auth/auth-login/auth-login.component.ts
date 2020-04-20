@@ -1,10 +1,11 @@
 import { Component, OnInit, Input, OnChanges, Output, EventEmitter } from '@angular/core';
-
+import {NgForm} from '@angular/forms';
 import { AuthService } from '../auth.service';
 
 import { User } from '../user';
 
 import { ToastrService } from 'ngx-toastr';
+import { CompileShallowModuleMetadata } from '@angular/compiler';
 
 @Component({
     selector: 'app-auth-login',
@@ -41,6 +42,19 @@ export class AuthLoginComponent implements OnInit {
     ngOnInit() {
         this.user = new User();
         this.roles = ['Administrator', 'Client'];
+    }
+
+    /**
+     * Method for testing purposes only
+     */
+    onSubmit(form:NgForm)
+    {
+        if( form.invalid)
+        {
+            return;
+        }
+        console.log('Formulario enviado');
+        console.log(this.user);
     }
 
 }
