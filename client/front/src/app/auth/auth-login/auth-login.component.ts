@@ -6,6 +6,7 @@ import { User } from '../user';
 
 import { ToastrService } from 'ngx-toastr';
 import { CompileShallowModuleMetadata } from '@angular/compiler';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-auth-login',
@@ -17,6 +18,7 @@ export class AuthLoginComponent implements OnInit {
    
     constructor(
         private authService: AuthService,
+        private router: Router,
     ) { }
 
     usuario: User;
@@ -26,6 +28,7 @@ export class AuthLoginComponent implements OnInit {
         this.authService.login(this.usuario)
         .subscribe( resp =>{
             console.log(resp);
+            this.router.navigate(['']);
         }, (err) =>{
             console.log(err);
 

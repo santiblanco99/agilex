@@ -4,6 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import { AuthService } from '../auth.service';
 import { User } from '../user';
 import { NgForm } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-auth-sign-up',
@@ -15,7 +16,8 @@ export class AuthSignUpComponent implements OnInit {
     usuario:User;
 
     constructor(
-        private authService: AuthService
+        private authService: AuthService,
+        private router: Router
     ) { }
 
 
@@ -35,6 +37,7 @@ export class AuthSignUpComponent implements OnInit {
         this.authService.registrar(this.usuario)
         .subscribe( resp =>{
             console.log(resp);
+            this.router.navigate(['']);
         }, (err) =>{
             console.log(err);
 
