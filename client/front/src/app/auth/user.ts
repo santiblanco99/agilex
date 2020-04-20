@@ -17,4 +17,6 @@ export class User {
     * The user's role
     */
     role: string;
+
+    email : string;
 }
