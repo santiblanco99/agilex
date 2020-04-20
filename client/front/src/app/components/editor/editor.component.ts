@@ -1,132 +1,106 @@
 import { AfterViewInit, OnDestroy, Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import * as Editor from '../../../../vendor/ckeditor5/build/classic-editor-with-real-time-collaboration.js';
 import { CloudServicesConfig } from './common-interfaces';
-import { CKEditor5 } from '@ckeditor/ckeditor5-angular';
+import { CKEditor5, ChangeEvent } from '@ckeditor/ckeditor5-angular';
+import { DocumentService } from 'src/app/services/document.service.js';
+import { Doc } from 'src/app/models/document.js';
 
 @Component({
-  selector: 'app-editor',
-  templateUrl: './editor.component.html',
-  styleUrls: ['./editor.component.css']
+	selector: 'app-editor',
+	templateUrl: './editor.component.html',
+	styleUrls: ['./editor.component.css']
 })
-export class EditorComponent implements AfterViewInit, OnDestroy {
-  @Input() public configuration!: CloudServicesConfig;
+export class EditorComponent {
+	@Input() public configuration!: CloudServicesConfig;
 	@Output() public ready = new EventEmitter<CKEditor5.Editor>();
-	@ViewChild( 'sidebar', { static: true } ) private sidebarContainer?: ElementRef<HTMLDivElement>;
-	@ViewChild( 'presenceList', { static: true } ) private presenceListContainer?: ElementRef<HTMLDivElement>;
-  
-  public Editor = Editor;
-  public editor?: CKEditor5.Editor;
+	@ViewChild('sidebar', { static: true }) private sidebarContainer?: ElementRef<HTMLDivElement>;
+	@ViewChild('presenceList', { static: true }) private presenceListContainer?: ElementRef<HTMLDivElement>;
 
-  private sidebar = document.createElement( 'div' );
-  private presenceList = document.createElement( 'div' );
+	public Editor = Editor;
 
-  public channelId = handleDocIdInUrl();
-  public data : string | null;
 
-  public config = {
-    cloudServices: {
-      uploadUrl: 'https://70531.cke-cs.com/easyimage/upload/',
-      webSocketUrl: '70531.cke-cs.com/ws',
-      tokenUrl: 'https://70531.cke-cs.com/token/dev/BjcS6wdYY6HmV7T3knVJdnijvkGMocYTgpTcPYwR15gXdjqhnn9Vryd44YbJ',
-    },
-    collaboration:{
-      channelId: this.channelId,
-    },
-    presenceList: {
-      container: this.presenceList,
-    }
+	private sidebar = document.createElement('div');
+	private presenceList = document.createElement('div');
 
-  }; 
+	public channelId = handleDocIdInUrl();
 
-	private boundRefreshDisplayMode = this.refreshDisplayMode.bind( this );
-  private boundCheckPendingActions = this.checkPendingActions.bind( this );
+	public data: String;
 
-  public ngAfterViewInit() {
-		if ( !this.sidebarContainer || !this.presenceListContainer ) {
-			throw new Error( 'Div containers for sidebar or presence list were not found' );
+	public dataReady: boolean;
+
+	public currentState: String;
+
+	public config = {
+		cloudServices: {
+			uploadUrl: 'https://70531.cke-cs.com/easyimage/upload/',
+			webSocketUrl: '70531.cke-cs.com/ws',
+			tokenUrl: 'https://70531.cke-cs.com/token/dev/BjcS6wdYY6HmV7T3knVJdnijvkGMocYTgpTcPYwR15gXdjqhnn9Vryd44YbJ',
+		},
+		collaboration: {
+			channelId: this.channelId,
+		},
+		presenceList: {
+			container: this.presenceList,
 		}
-    this.sidebarContainer.nativeElement.appendChild( this.sidebar );
-		this.presenceListContainer.nativeElement.appendChild( this.presenceList );
-  }
-  
-  public ngOnDestroy() {
-		window.removeEventListener( 'resize', this.boundRefreshDisplayMode );
-		window.removeEventListener( 'beforeunload', this.boundCheckPendingActions );
+
+	};
+
+	constructor(private documentService: DocumentService) {
+
 	}
 
-	private onReady( editor: CKEditor5.Editor ) {
-		this.editor = editor;
-		this.ready.emit( editor );
-
-		// Prevent closing the tab when any action is pending.
-		window.addEventListener( 'beforeunload', this.boundCheckPendingActions );
-
-		// Switch between inline and sidebar annotations according to the window size.
-		window.addEventListener( 'resize', this.boundRefreshDisplayMode );
-		this.refreshDisplayMode();
+	ngOnInit(): void {
+		console.log('loading dummy info');
+		this.documentService.getDocumentById('59qYVVDOUM85HOz37d92').subscribe(doc => {
+			console.log('Angular is ' + doc.id);
+			this.data = doc.content;
+			this.dataReady = true;
+		});
 	}
+	public onChange({ editor }: ChangeEvent) {
+		this.currentState = editor.getData();
 
-	private checkPendingActions( domEvt ) {
-		if ( this.editor.plugins.get( 'PendingActions' ).hasAny ) {
-			domEvt.preventDefault();
-			domEvt.returnValue = true;
-		}
+		console.log(this.currentState);
 	}
-
-	private refreshDisplayMode() {
-		const annotations = this.editor.plugins.get( 'Annotations' );
-		const sidebarElement = this.sidebarContainer.nativeElement;
-
-		if ( window.innerWidth < 1070 ) {
-			sidebarElement.classList.remove( 'narrow' );
-			sidebarElement.classList.add( 'hidden' );
-			annotations.switchTo( 'inline' );
+	onClicked() {
+		if(this.currentState==null){
+			this.currentState = this.data;
 		}
-		else if ( window.innerWidth < 1300 ) {
-			sidebarElement.classList.remove( 'hidden' );
-			sidebarElement.classList.add( 'narrow' );
-			annotations.switchTo( 'narrowSidebar' );
-		}
-		else {
-			sidebarElement.classList.remove( 'hidden', 'narrow' );
-			annotations.switchTo( 'wideSidebar' );
-		}
+		var doc = new Doc('prueba', 'Santi Blancoooo', this.currentState);
+		this.documentService.postDocument(doc).subscribe(result => {
+			console.log('posted ' + result.id);
+		});
 	}
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
 }
 
 function handleDocIdInUrl() {
-  let id = getDocIdFromUrl();
+	let id = getDocIdFromUrl();
 
-  if ( !id ) {
-    id = randomString();
-    updateDocIdInUrl( id );
-  }
+	if (!id) {
+		id = randomString();
+		updateDocIdInUrl(id);
+	}
 
-  return id;
+	return id;
 }
 
 function getDocIdFromUrl() {
-  const channelIdMatch = location.search.match( /channelId=(.+)$/ );
+	const channelIdMatch = location.search.match(/channelId=(.+)$/);
 
-  return channelIdMatch ? decodeURIComponent( channelIdMatch[ 1 ] ) : null;
+	return channelIdMatch ? decodeURIComponent(channelIdMatch[1]) : null;
 }
 
 function randomString() {
-  return Math.floor( Math.random() * Math.pow( 2, 52 ) ).toString( 32 );
+	return Math.floor(Math.random() * Math.pow(2, 52)).toString(32);
 }
 
-function updateDocIdInUrl( id: string ) {
-  window.history.replaceState( {}, document.title, generateUrlWithDocId( id ) );
+function updateDocIdInUrl(id: string) {
+	window.history.replaceState({}, document.title, generateUrlWithDocId(id));
 }
 
-function generateUrlWithDocId( id: string ) {
-  return `${ window.location.href.split( '?' )[ 0 ] }?channelId=${ id }`;
-}  
+function generateUrlWithDocId(id: string) {
+	return `${window.location.href.split('?')[0]}?channelId=${id}`;
+}
 
 
 
