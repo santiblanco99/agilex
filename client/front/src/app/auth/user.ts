@@ -18,5 +18,8 @@ export class User {
     */
     role: string;
 
+    /**
+     * The user's email
+     */
     email : string;
 }
