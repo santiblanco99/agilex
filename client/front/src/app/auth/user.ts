@@ -3,23 +3,12 @@
 * It contains all the information relevant to the user.
 */
 export class User {
-    /**
-    * The user's name
-    */
-    name: string;
-
-    /**
-    * The user's password
-    */
+    
+    nombre: string;
     password: string;
-
-    /**
-    * The user's role
-    */
-    role: string;
-
-    /**
-     * The user's email
-     */
+    direccion: string;
     email : string;
+    NIT: string;
+    telefono: string;
+    
 }

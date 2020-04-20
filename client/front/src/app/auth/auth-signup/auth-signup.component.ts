@@ -3,6 +3,7 @@ import { ToastrService } from 'ngx-toastr';
 
 import { AuthService } from '../auth.service';
 import { User } from '../user';
+import { NgForm } from '@angular/forms';
 
 @Component({
     selector: 'app-auth-sign-up',
@@ -11,34 +12,42 @@ import { User } from '../user';
 })
 export class AuthSignUpComponent implements OnInit {
 
-    /**
-    * Constructor for the component
-    * @param authService Auth service provider
-    * @param toastrService The toastr to show messages to the user
-    */
+    usuario:User;
+
     constructor(
-        private authService: AuthService,
-        private toastrService: ToastrService,
+        private authService: AuthService
     ) { }
 
-    user: User;
 
-    roles: String[];
 
-    /**
-    * Sign the user up with the selected role
-    */
-    signUp(): void {
-        /*this.authService.login(this.user.role);
-        this.toastrService.success('Successfully signed up')*/
-    }
 
     /**
     * This function will initialize the component
     */
     ngOnInit() {
-        this.user = new User();
-        this.roles = ['Administrator', 'Client'];
+        this.usuario = new User();
+    }
+
+    onSubmit(form: NgForm){
+        
+        if(form.invalid){return;}
+
+        this.authService.registrar(this.usuario)
+        .subscribe( resp =>{
+            console.log(resp);
+        }, (err) =>{
+            console.log(err);
+
+            console.log(err.error.error.message);
+        })
+
+        
+        this.authService.postNuevoUsuario(this.usuario)
+        .subscribe( resp =>{
+            console.log(resp);
+        })
+        
+        
     }
 
 }

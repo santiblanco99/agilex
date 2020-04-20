@@ -9,6 +9,7 @@ import {EditorComponent} from '../components/editor/editor.component';
 import { AuthLoginComponent } from '../auth/auth-login/auth-login.component';
 import { AuthSignUpComponent } from '../auth/auth-signup/auth-signup.component';
 import { Error404Component } from '../components/error404/error404.component';
+import { AuthGuard } from '../auth/guards/auth.guard';
 
 const routes : Routes = [
     {
@@ -21,7 +22,6 @@ const routes : Routes = [
             {
                 path: 'login',
                 component: AuthLoginComponent,
-                canActivate: [NgxPermissionsGuard],
                 data: {
                     permissions: {
                         only: ['GUEST']
@@ -31,7 +31,6 @@ const routes : Routes = [
             {
                 path: ':sign-up',
                 component: AuthSignUpComponent,
-                canActivate: [NgxPermissionsGuard],
                 data: {
                     permissions: {
                         only: ['GUEST']

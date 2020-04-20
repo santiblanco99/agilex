@@ -3,14 +3,22 @@
         <br>
         <h2 class="text-center">Login</h2>
         <br>
-        <form name="login" (ngSubmit)="onSubmit(f)" #f="ngForm">
+        <form name="login" (ngSubmit)="login(f)" #f="ngForm">
             <div class="form-group">
                 <label for="email"><b>Correo electrónico</b></label>
-                <input [(ngModel)]="user.email" type="email" name="email" class="form-control" id="email" required >
+                <input [(ngModel)]="usuario.email" 
+                        type="email" 
+                        name="email" 
+                        class="form-control" 
+                        id="email" required email >
             </div>
             <div class="form-group">
                 <label for="password"><b>Contraseña</b></label>
-                <input [(ngModel)]="user.password" type="text" name="password" class="form-control" id="password" required >
+                <input [(ngModel)]="usuario.password" 
+                type="password" 
+                name="password" 
+                class="form-control" 
+                id="password" required >
             </div>
             <div class="justify-content-center align-self-center">
                 <button type="submit" class="btn btn-primary">Ingresar</button>

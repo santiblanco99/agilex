@@ -14,47 +14,34 @@ import { CompileShallowModuleMetadata } from '@angular/compiler';
 })
 export class AuthLoginComponent implements OnInit {
 
-    /**
-    * Constructor for the component
-    * @param authService Auth service provider
-    * @param toastrService The toastr to show messages to the user
-    */
+   
     constructor(
         private authService: AuthService,
-        private toastrService: ToastrService,
     ) { }
 
-    user: User;
+    usuario: User;
 
-    roles: String[];
+   
+    login(form: NgForm): void {
+        this.authService.login(this.usuario)
+        .subscribe( resp =>{
+            console.log(resp);
+        }, (err) =>{
+            console.log(err);
 
-    /**
-    * Logs the user in with the selected role
-    */
-    login(): void {
-        this.authService.login(this.user.role);
-        this.toastrService.success('Logged in')
+            console.log(err.error.error.message);
+        })
     }
 
-    /**
-    * This function will initialize the component
-    */
+    
     ngOnInit() {
-        this.user = new User();
-        this.roles = ['Administrator', 'Client'];
+        this.usuario = new User();
     }
 
-    /**
-     * Method for testing purposes only
-     */
-    onSubmit(form:NgForm)
+   
+    onSubmit()
     {
-        if( form.invalid)
-        {
-            return;
-        }
-        console.log('Formulario enviado');
-        console.log(this.user);
+        
     }
 
 }
