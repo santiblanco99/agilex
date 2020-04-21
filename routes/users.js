@@ -8,14 +8,14 @@ const db = require('./firestore');
 router.post('/', async (req,res)=>{
     console.log(req.body);
   
-  let docRef = db.collection('users').doc(req.body.NIT);
+  let docRef = db.collection('users').doc(req.body.email);
   
   let setData =  await docRef.set({
     nombre: req.body.nombre,
     NIT: req.body.NIT,
     direccion: req.body.direccion,
     telefono: req.body.telefono,
-    email: req.body.telefono,
+    email: req.body.email,
   });
   
   var ans = db.collection('users').doc(docRef.id);
@@ -27,6 +27,18 @@ router.post('/', async (req,res)=>{
   res.json(resp);
   
   
+  });
+
+  router.get('/:id',  async function(req,res){
+    var id = req.params.id;
+    console.log(id);
+    var docu = db.collection('users').doc(id);
+    let getDoc = await docu.get(); 
+    console.log('data is' + getDoc.data());
+    var ans = getDoc.data();
+    ans.id = getDoc.id;
+    console.log('ans is ' + ans);
+    res.send(ans);
   });
 
   module.exports = router;

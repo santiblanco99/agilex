@@ -24,44 +24,48 @@ export class AuthService {
     private apiKey = 'AIzaSyCABIcza604wAWi0s-yR2tBYlG7YMsOO04';
 
     userToken: string;
+    userEmail: string;
 
     constructor( private http: HttpClient ){}
 
     logout(){
         localStorage.removeItem('token');
+        localStorage.removeItem('email');
     }
 
-    login(usuario: User){
+    login(usuario: User):Observable<User>{
         const authData={
             email: usuario.email,
             password: usuario.password,
             returnSecureToken: true
         };
 
-        return this.http.post(
+        return this.http.post<User>(
             `${ this.url }/accounts:signInWithPassword?key=${this.apiKey} `,
         authData
         ).pipe(
             map(resp =>{
                 this.guardarToken(resp['idToken']);
+                this.saveEmail(resp.email);
                 return resp
             })
         );
     }
 
-    registrar(usuario: User){
+    registrar(usuario: User):Observable<User>{
         const authData={
             email: usuario.email,
             password: usuario.password,
             returnSecureToken: true
         };
 
-        return this.http.post(
+        return this.http.post<User>(
             `${ this.url }/accounts:signUp?key=${this.apiKey} `,
         authData
         ).pipe(
             map(resp =>{
                 this.guardarToken(resp['idToken']);
+                this.saveEmail(resp.email);
                 return resp
             })
         );
@@ -87,6 +91,13 @@ export class AuthService {
             this.userToken='';
         }
         return this.userToken;
+    }
+
+    getUserEmail():string{
+        return localStorage.getItem('email');
+    }
+    saveEmail(email:string){
+        localStorage.setItem('email',email);
     }
 
 

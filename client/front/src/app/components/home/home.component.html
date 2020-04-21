@@ -1,7 +1,14 @@
 
-    <div class="jumbotron">
+    <div class="jumbotron" *ngIf="loggedIn;else otro">
         <div class="container">
-            <h1 class="display-3">Bienvenido a Agilex</h1>
+            <h1 class="display-3">Bienvenido a Agilex, {{this.loggedUser.nombre}}</h1>
         </div>
     </div>
 
+    <ng-template #otro>
+        <div class="jumbotron">
+            <div class="container">
+                <h1 class="display-3">Bienvenido a Agilex</h1>
+            </div>
+        </div>
+    </ng-template>
