@@ -5,7 +5,7 @@
     </div>
 </div> 
 <br>
-    <ckeditor [editor]="Editor" [config] = 'config' [(data)]='data' (change)="onChange($event)"></ckeditor>
+    <ckeditor [editor]="Editor" [config] = 'config' [(data)]='data' (change)="onChange($event)" [disabled]='isDisabled'></ckeditor>
     <br>
     <br>
     <div class="row">

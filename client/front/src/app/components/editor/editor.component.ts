@@ -31,6 +31,8 @@ export class EditorComponent {
 
 	public currentState: String;
 
+	public isDisabled = false;
+
 	public config = {
 		cloudServices: {
 			uploadUrl: 'https://70531.cke-cs.com/easyimage/upload/',
@@ -78,8 +80,7 @@ export class EditorComponent {
 
 	accept()
 	{
-		this.onClicked();
-		Editor.lock();
+		this.isDisabled = !this.isDisabled;
 	}
 }
 
