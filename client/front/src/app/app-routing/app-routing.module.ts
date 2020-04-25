@@ -41,7 +41,17 @@ const routes : Routes = [
     },
     {
         path:'newDocument',
-        component: EditorComponent,
+        children: [
+            {
+                path: '',
+                component: EditorComponent
+            },
+            {
+                path: ':id',
+                component: EditorComponent
+            }
+        ]
+        
     },
     {
         path:'documents',

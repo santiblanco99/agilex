@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
-
 import { EditorComponent } from './editor.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule( {
 	declarations: [
@@ -9,6 +9,7 @@ import { EditorComponent } from './editor.component';
 	],
 	imports: [
 		CKEditorModule,
+		FormsModule
 	],
 	providers: [],
 	bootstrap: [ EditorComponent ],

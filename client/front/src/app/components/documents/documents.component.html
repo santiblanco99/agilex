@@ -22,7 +22,7 @@
     <div class="card text-center" *ngFor="let doc of documents">
         <img class="card-img-top" src="./../../../assets/file.png" alt="Card image cap">
         <div class="card-body">
-          <p class="card-text">{{doc.name}}</p>
+          <p class="card-link" routerLink="/newDocument/{{doc.id}}">{{doc.name}}</p>
           <p class="card-text"><small class="text-muted">Última actualización hace 3 minutos</small></p>
         </div>
       </div>

@@ -1,18 +1,20 @@
 <div class-="body" *ngIf="dataReady">
-<div class="dropdown">
-    <div class="col-md-4">
-        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="guardarDropdown">Guardar cómo</button>
-        <form class="dropdown-menu px-4 py-3" id="guardarDropdown" aria-labelledby="guardarDropdown" (ngSubmit)="onClicked(f)" #f="ngForm">
-            <div class="form-group">
-              <label for="dropdownDocName">Nombre del documento</label>
-              <input type="text" class="form-control" [(ngModel)] ="docTitle"  name="titulo"
-              id="dropdownDocName" placeholder="Título del documento">
-            </div>
-            <button type="submit" class="btn btn-primary">Guardar</button>
-          </form>
-    </div>
-</div> 
-<br>
+    <nav class="navbar navbar-light bg-light">
+        
+            <form class="form-inline" (ngSubmit)="onClicked(f)" #f="ngForm"> 
+                <div class="form-group mb-2">
+                  <label for="staticField" class="sr-only">Título</label>
+                  <input type="text" readonly class="form-control-plaintext" id="staticField" value="Título del documento">
+                </div>
+                <div class="form-group mx-sm-3 mb-2">
+                  <label for="inputTitle" class="sr-only">Title</label>
+                  <input type="text" class="form-control" id="inputTitle" placeholder="Título" [(ngModel)] ="docTitle"  name="titulo">
+                </div>
+                <button type="submit" class="btn btn-primary mb-2">Guardar</button>
+              </form>
+       
+    </nav>
+    <br>
     <ckeditor [editor]="Editor" [config] = 'config' [(data)]='data' (change)="onChange($event)" [disabled]='isDisabled'></ckeditor>
     <br>
     <br>

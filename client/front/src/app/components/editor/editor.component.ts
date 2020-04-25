@@ -9,8 +9,7 @@ import { User } from '../../auth/user';
 import { UserService } from '../../services/user.service';
 import { AuthService } from '../../auth/auth.service';
 import { NgForm } from '@angular/forms';
-
-
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
 	selector: 'app-editor',
@@ -59,13 +58,14 @@ export class EditorComponent {
 
 	};
 
-	constructor(private documentService: DocumentService, private authService: AuthService, private userService: UserService) {
+	constructor(private documentService: DocumentService, private authService: AuthService, private userService: UserService, private route : ActivatedRoute) {
 
-	}
+	};
 
 	ngOnInit(): void {
 		console.log('loading dummy info');
-		this.documentService.getDocumentById('59qYVVDOUM85HOz37d92').subscribe(doc => {
+		var docId = this.route.snapshot.params.id;
+		this.documentService.getDocumentById(docId).subscribe(doc => {
 			console.log('Angular is ' + doc.id);
 			this.data = doc.content;
 			this.dataReady = true;
