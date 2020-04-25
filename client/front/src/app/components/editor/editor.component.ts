@@ -68,7 +68,6 @@ export class EditorComponent {
 		this.documentService.getDocumentById(docId).subscribe(doc => {
 			console.log('Angular is ' + doc.id);
 			this.data = doc.content;
-			this.dataReady = true;
 		});
 		var email = this.authService.getUserEmail();
     	if(email != null && email != undefined){
@@ -76,7 +75,8 @@ export class EditorComponent {
         	this.loggedUser = user;
         	this.loggedIn = true;
       		});
-    	}
+		}
+		this.dataReady = true;
 	}
 
 	public onChange({ editor }: ChangeEvent) 
@@ -94,9 +94,11 @@ export class EditorComponent {
 		if(this.docTitle==null){
 			this.docTitle = 'prueba';
 		}
-		var doc = new Doc(this.docTitle, this.loggedUser.email, this.currentState);
+		var date = new Date(Date.now());
+		var doc = new Doc(this.docTitle, this.loggedUser.email, this.currentState, date);
 		this.documentService.postDocument(doc).subscribe(result => {
 			console.log('posted ' + result.id);
+			console.log('doc data:' + doc.lastEdited);
 		});
 	}
 
