@@ -5,6 +5,11 @@ import { CKEditor5, ChangeEvent } from '@ckeditor/ckeditor5-angular';
 import { DocumentService } from 'src/app/services/document.service.js';
 import { Doc } from 'src/app/models/document.js';
 import { CommonModule } from '@angular/common';
+import { User } from '../../auth/user';
+import { UserService } from '../../services/user.service';
+import { AuthService } from '../../auth/auth.service';
+
+
 
 @Component({
 	selector: 'app-editor',
@@ -19,6 +24,9 @@ export class EditorComponent {
 
 	public Editor = Editor;
 
+	/* Propiedades para verificar el usuario*/
+	public loggedIn = false;
+	public loggedUser: User;
 
 	private sidebar = document.createElement('div');
 	private presenceList = document.createElement('div');
@@ -48,7 +56,7 @@ export class EditorComponent {
 
 	};
 
-	constructor(private documentService: DocumentService) {
+	constructor(private documentService: DocumentService, private authService: AuthService, private userService: UserService) {
 
 	}
 
@@ -59,6 +67,13 @@ export class EditorComponent {
 			this.data = doc.content;
 			this.dataReady = true;
 		});
+		var email = this.authService.getUserEmail();
+    if(email != null && email != undefined){
+      this.userService.getDocumentById(email).subscribe(user=>{
+        this.loggedUser = user;
+        this.loggedIn = true;
+      });
+    }
 	}
 
 	public onChange({ editor }: ChangeEvent) 
@@ -72,7 +87,7 @@ export class EditorComponent {
 		if(this.currentState==null){
 			this.currentState = this.data;
 		}
-		var doc = new Doc('prueba', 'Santi Blancoooo', this.currentState);
+		var doc = new Doc('prueba', this.loggedUser.email, this.currentState);
 		this.documentService.postDocument(doc).subscribe(result => {
 			console.log('posted ' + result.id);
 		});
