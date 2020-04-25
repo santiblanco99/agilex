@@ -8,6 +8,7 @@ import { CommonModule } from '@angular/common';
 import { User } from '../../auth/user';
 import { UserService } from '../../services/user.service';
 import { AuthService } from '../../auth/auth.service';
+import { NgForm } from '@angular/forms';
 
 
 
@@ -27,6 +28,8 @@ export class EditorComponent {
 	/* Propiedades para verificar el usuario*/
 	public loggedIn = false;
 	public loggedUser: User;
+
+	public docTitle : String | null;
 
 	private sidebar = document.createElement('div');
 	private presenceList = document.createElement('div');
@@ -83,11 +86,15 @@ export class EditorComponent {
 		console.log(this.currentState);
 	}
 
-	onClicked() {
+	/* Método para guardar el documento*/
+	onClicked(form: NgForm) {
 		if(this.currentState==null){
 			this.currentState = this.data;
 		}
-		var doc = new Doc('prueba', this.loggedUser.email, this.currentState);
+		if(this.docTitle==null){
+			this.docTitle = 'prueba';
+		}
+		var doc = new Doc(this.docTitle, this.loggedUser.email, this.currentState);
 		this.documentService.postDocument(doc).subscribe(result => {
 			console.log('posted ' + result.id);
 		});
