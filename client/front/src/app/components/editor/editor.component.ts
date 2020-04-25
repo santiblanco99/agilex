@@ -76,6 +76,7 @@ export class EditorComponent {
 				//console.log(doc.content);
 				this.data = doc.content;
 				this.bottonName = 'Actualizar';
+				this.doc = doc;
 				this.dataReady = true;
 			});
 		}
