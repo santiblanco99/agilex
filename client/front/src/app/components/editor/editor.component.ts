@@ -68,12 +68,12 @@ export class EditorComponent {
 			this.dataReady = true;
 		});
 		var email = this.authService.getUserEmail();
-    if(email != null && email != undefined){
-      this.userService.getDocumentById(email).subscribe(user=>{
-        this.loggedUser = user;
-        this.loggedIn = true;
-      });
-    }
+    	if(email != null && email != undefined){
+      		this.userService.getDocumentById(email).subscribe(user=>{
+        	this.loggedUser = user;
+        	this.loggedIn = true;
+      		});
+    	}
 	}
 
 	public onChange({ editor }: ChangeEvent) 
