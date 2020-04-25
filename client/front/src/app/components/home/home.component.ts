@@ -23,12 +23,11 @@ export class HomeComponent implements OnInit {
     var email = this.authService.getUserEmail();
     if(email != null && email != undefined){
       this.userService.getDocumentById(email).subscribe(user=>{
+        console.log(user.email);
         this.loggedUser = user;
         this.loggedIn = true;
       });
     }
-
-    console.log(this.loggedUser);
   }
 
 }

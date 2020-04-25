@@ -16,21 +16,16 @@ export class DocumentsComponent implements OnInit {
 	public loggedIn = false;
 	public loggedUser: User;
 
-  constructor(private documentService:DocumentService, private authService: AuthService, private userService: UserService) { }
+  constructor(private documentService:DocumentService, private authService: AuthService) { }
 
   documents: Doc[];
 
   ngOnInit(): void {
-    console.log('loading docs');
-    this.documentService.getDocuments().subscribe(docs=>{
-      console.log(docs);
-      this.documents = docs;
-    });
+
     var email = this.authService.getUserEmail();
     if(email != null && email != undefined){
-      this.userService.getDocumentById(email).subscribe(user=>{
-      this.loggedUser = user;
-      this.loggedIn = true;
+      this.documentService.getMyDocuments(email).subscribe(docs=>{
+        this.documents = docs;
       });
   }
   }

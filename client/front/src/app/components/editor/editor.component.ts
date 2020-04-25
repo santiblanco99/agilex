@@ -28,7 +28,7 @@ export class EditorComponent {
 	public loggedIn = false;
 	public loggedUser: User;
 
-	public docTitle : String | null;
+	public docTitle: String | null;
 
 	private sidebar = document.createElement('div');
 	private presenceList = document.createElement('div');
@@ -37,11 +37,15 @@ export class EditorComponent {
 
 	public data: String;
 
-	public dataReady: boolean;
+	public dataReady = false;
 
 	public currentState: String;
 
 	public isDisabled = false;
+
+	public doc: Doc;
+
+	public bottonName: String;
 
 	public config = {
 		cloudServices: {
@@ -58,29 +62,35 @@ export class EditorComponent {
 
 	};
 
-	constructor(private documentService: DocumentService, private authService: AuthService, private userService: UserService, private route : ActivatedRoute) {
+	constructor(private documentService: DocumentService, private authService: AuthService, private userService: UserService, private route: ActivatedRoute) {
 
 	};
 
 	ngOnInit(): void {
-		console.log('loading dummy info');
+		this.bottonName = 'Guardar';
 		var docId = this.route.snapshot.params.id;
-		this.documentService.getDocumentById(docId).subscribe(doc => {
-			console.log('Angular is ' + doc.id);
-			this.data = doc.content;
-		});
-		var email = this.authService.getUserEmail();
-    	if(email != null && email != undefined){
-      		this.userService.getDocumentById(email).subscribe(user=>{
-        	this.loggedUser = user;
-        	this.loggedIn = true;
-      		});
+		if (docId != null && docId != undefined) {
+			console.log('loading previous info');
+			this.documentService.getDocumentById(docId).subscribe(doc => {
+				console.log('Angular is ' + doc.id);
+				//console.log(doc.content);
+				this.data = doc.content;
+				this.bottonName = 'Actualizar';
+				this.dataReady = true;
+			});
 		}
-		this.dataReady = true;
+		var email = this.authService.getUserEmail();
+		if (email != null && email != undefined) {
+			this.userService.getDocumentById(email).subscribe(user => {
+				this.loggedUser = user;
+				this.loggedIn = true;
+				console.log(user.email);
+				this.dataReady = true;
+			});
+		}
 	}
 
-	public onChange({ editor }: ChangeEvent) 
-	{
+	public onChange({ editor }: ChangeEvent) {
 		this.currentState = editor.getData();
 
 		console.log(this.currentState);
@@ -88,22 +98,40 @@ export class EditorComponent {
 
 	/* Método para guardar el documento*/
 	onClicked(form: NgForm) {
-		if(this.currentState==null){
+		if (this.currentState == null) {
 			this.currentState = this.data;
 		}
-		if(this.docTitle==null){
-			this.docTitle = 'prueba';
+		// if (this.docTitle == null) {
+		// 	this.docTitle = 'prueba';
+		// }
+		if (this.doc == null) {
+			var date = new Date(Date.now());
+			let newDoc = new Doc(this.docTitle, this.loggedUser.email, this.currentState, date);
+			this.documentService.postDocument(newDoc).subscribe(result => {
+				console.log(result);
+				console.log('posted ' + result.id);
+				console.log('doc data:' + result.lastEdited);
+				this.doc = result;
+				this.bottonName = 'Actualizar';
+			},error=>{
+				console.log(error);
+				alert('Hubo un error al procesar el documento');
+			});
 		}
-		var date = new Date(Date.now());
-		var doc = new Doc(this.docTitle, this.loggedUser.email, this.currentState, date);
-		this.documentService.postDocument(doc).subscribe(result => {
-			console.log('posted ' + result.id);
-			console.log('doc data:' + doc.lastEdited);
-		});
+		else {
+			console.log(this.doc);
+			this.doc.name = this.docTitle;
+			this.doc.content = this.currentState;
+			this.doc.lastEdited = new Date(Date.now());
+			this.documentService.putDocument(this.doc).subscribe(result=>{
+				console.log('doc updated with id '+result.id );
+				this.doc=result;
+			});
+		}
+
 	}
 
-	accept()
-	{
+	accept() {
 		this.isDisabled = !this.isDisabled;
 	}
 }
