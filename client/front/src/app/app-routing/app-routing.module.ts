@@ -41,6 +41,7 @@ const routes : Routes = [
     },
     {
         path:'newDocument',
+        canActivate: [AuthGuard],
         children: [
             {
                 path: '',
@@ -55,10 +56,12 @@ const routes : Routes = [
     },
     {
         path:'documents',
+        canActivate: [AuthGuard],
         component: DocumentsComponent
     },
     {
         path: '**',
+        canActivate: [AuthGuard],
         component: Error404Component
     }
 

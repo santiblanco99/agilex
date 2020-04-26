@@ -25,12 +25,14 @@ export class AuthService {
 
     userToken: string;
     userEmail: string;
+    expires: string;
 
     constructor( private http: HttpClient ){}
 
     logout(){
-        localStorage.removeItem('token');
-        localStorage.removeItem('email');
+        sessionStorage.removeItem('token');
+        sessionStorage.removeItem('email');
+        sessionStorage.removeItem('expires')
     }
 
     login(usuario: User):Observable<User>{
@@ -45,7 +47,7 @@ export class AuthService {
         authData
         ).pipe(
             map(resp =>{
-                this.guardarToken(resp['idToken']);
+                this.guardarToken(resp['idToken'], resp['expiresIn']);
                 this.saveEmail(resp.email);
                 return resp
             })
@@ -64,7 +66,7 @@ export class AuthService {
         authData
         ).pipe(
             map(resp =>{
-                this.guardarToken(resp['idToken']);
+                this.guardarToken(resp['idToken'],  resp['expiresIn']);
                 this.saveEmail(resp.email);
                 return resp
             })
@@ -78,14 +80,19 @@ export class AuthService {
 
     }
 
-    private guardarToken(idToken: string){
+    private guardarToken(idToken: string, expiresIn: string){
         this.userToken = idToken;
-        localStorage.setItem('token', idToken);
+        sessionStorage.setItem('token', idToken);
+
+        let hoy = new Date();
+        hoy.setSeconds(Number(expiresIn))
+
+        sessionStorage.setItem('expires', hoy.getTime().toString())
     }
 
     leerToken(){
-        if(localStorage.getItem('token')){
-            this.userToken = localStorage.getItem('token');
+        if(sessionStorage.getItem('token')){
+            this.userToken = sessionStorage.getItem('token');
         }
         else{
             this.userToken='';
@@ -94,15 +101,29 @@ export class AuthService {
     }
 
     getUserEmail():string{
-        return localStorage.getItem('email');
+        return sessionStorage.getItem('email');
     }
     saveEmail(email:string){
-        localStorage.setItem('email',email);
+        sessionStorage.setItem('email',email);
     }
 
 
     estaAutenticado(): boolean{
-        return this.userToken.length>2;
+        if(this.leerToken().length<2){
+            return false
+        }
+
+        const expira = Number(sessionStorage.getItem('expires'));
+        const expiraDate = new Date();
+        expiraDate.setTime(expira);
+
+        if(expiraDate> new Date()){
+            return true
+        }
+        else{
+            this.logout()
+            return false
+        }
     }
 
 

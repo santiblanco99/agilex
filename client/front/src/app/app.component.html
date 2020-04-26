@@ -3,11 +3,16 @@
     <a class="navbar-brand" href="/">
       <img src="./../assets/Agilex Logo.png" width="150">
     </a>
-        <a routerLink='newDocument' >Crear nuevo documento</a>
-        <a routerLink='documents' >Mis documentos</a> 
-        <a routerLink='auth/sign-up' >Registrarse</a>
-        <a routerLink='auth/login' >Ingresar</a> 
- 
+        <a routerLink='newDocument' *ngIf="estaAutenticado()==true">Crear nuevo documento</a>
+        <a routerLink='documents' *ngIf="estaAutenticado()==true">Mis documentos</a> 
+       
+       <div>  
+        
+              <button class="btn btn-outline-info btn-space" routerLink='auth/sign-up' *ngIf="estaAutenticado()==false">Registrarse</button>
+              <button class="btn btn-outline-info btn-space" routerLink='auth/login' *ngIf="estaAutenticado()==false">Ingresar</button> 
+              <button class="btn btn-outline-danger btn-space" (click)="salir()" *ngIf="estaAutenticado()==true" >Cerrar Sesión</button> 
+        
+      </div>
 
   </nav>
 

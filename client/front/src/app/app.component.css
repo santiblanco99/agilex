@@ -19,6 +19,10 @@
   .spacer {
     flex: 1;
   }
+
+  .btn-space {
+    margin-right: 20px;
+}
   
 
   .navbar {
