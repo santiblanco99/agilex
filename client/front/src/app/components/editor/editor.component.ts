@@ -50,6 +50,7 @@ export class EditorComponent {
 	public guest:Map <String,String>;
 
 	public online: String [];
+	
 
 	public config = {
 		cloudServices: {
@@ -167,23 +168,23 @@ export class EditorComponent {
 		var random = randomString();
 		if (correo != null && correo !="")
 		{
-			if (this.guest == undefined)
-		{
-			this.guest = new Map();
-		}
-		this.guest [random]= correo;
-		this.doc.guest= this.guest;
-		//var date = new Date(Date.now());
-		//let newDoc = new Doc(this.guest ,this.currentState,  date,  this.loggedUser.email,this.docTitle );
-		this.doc.name = this.docTitle;
-		this.doc.content = this.currentState;
-		
-		this.documentService.putDocument(this.doc).subscribe(result=>{
-			console.log('doc updated with id '+result.id );
-			this.doc=result;
-		});
-		
-		alert("El link es: "+"http://localhost:4200/guest/"+this.doc.id+"/"+random);
+			if (this.doc.guest == undefined)
+			{
+				this.doc.guest = new Map();
+			}
+			this.doc.guest [random]= correo;
+			this.guest = this.doc.guest;
+			//var date = new Date(Date.now());
+			//let newDoc = new Doc(this.guest ,this.currentState,  date,  this.loggedUser.email,this.docTitle );
+		//	this.doc.name = this.docTitle;
+			//this.doc.content = this.currentState;
+			
+			this.documentService.putDocument(this.doc).subscribe(result=>{
+				console.log('doc updated with id '+result.id );
+				this.doc=result;
+			});
+			
+			alert("El link es: "+"http://localhost:4200/guest/"+this.doc.id+"/"+random);
 		}
 		
 		
@@ -202,10 +203,11 @@ export class EditorComponent {
 		if (this.doc == null) {
 			var date = new Date(Date.now());
 			this.online = [this.loggedUser.email];
-			if (this.guest == undefined)
-					{
-						this.guest = new Map();
-					}
+			if (this.doc.guest == undefined)
+			{
+				this.doc.guest = new Map();
+			}
+			this.guest = this.doc.guest;
 			
 			let newDoc = new Doc(this.guest ,this.currentState,  date,  this.loggedUser.email,this.docTitle,this.online );
 			console.log('doc data:' + this.currentState);
