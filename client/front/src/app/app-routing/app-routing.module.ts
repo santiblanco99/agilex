@@ -55,6 +55,20 @@ const routes : Routes = [
         
     },
     {
+        path: 'guest',
+        children: [
+            {
+                path: '',
+                component: EditorComponent
+            },
+            {
+                path: ':id/:id2',
+                component: EditorComponent
+            }
+        ]
+
+    },
+    {
         path:'documents',
         canActivate: [AuthGuard],
         component: DocumentsComponent

@@ -47,6 +47,10 @@ export class EditorComponent {
 
 	public bottonName: String;
 
+	public guest:Map <String,String>;
+
+	public online: String [];
+
 	public config = {
 		cloudServices: {
 			uploadUrl: 'https://70531.cke-cs.com/easyimage/upload/',
@@ -69,26 +73,87 @@ export class EditorComponent {
 	ngOnInit(): void {
 		this.bottonName = 'Guardar';
 		var docId = this.route.snapshot.params.id;
-		if (docId != null && docId != undefined) {
-			console.log('loading previous info');
-			this.documentService.getDocumentById(docId).subscribe(doc => {
-				console.log('Angular is ' + doc.id);
-				//console.log(doc.content);
-				this.data = doc.content;
-				this.bottonName = 'Actualizar';
-				this.doc = doc;
-				this.dataReady = true;
-			});
+		if (this.route.snapshot.params.id2 == undefined )
+		{
+			if (docId != null && docId != undefined) {
+				console.log('loading previous info');
+				this.documentService.getDocumentById(docId).subscribe(doc => {
+					console.log('Angular is ' + doc.id);
+					//console.log(doc.content);
+					this.data = doc.content;
+					this.bottonName = 'Actualizar';
+					this.doc = doc;
+					this.dataReady = true;
+					this.online = doc.online;
+				});
+			}
+			var email = this.authService.getUserEmail();
+			if (email != null && email != undefined) {
+				this.userService.getDocumentById(email).subscribe(user => {
+					this.loggedUser = user;
+					this.loggedIn = true;
+					console.log(user.email);
+					this.dataReady = true;
+					this.online = this.doc.online;
+					if (this.online == undefined)
+					{
+						this.online =[];
+					}
+					this.online.push(this.loggedUser.email);
+					this.doc.online = this.online;
+					this.documentService.putDocument(this.doc).subscribe(result=>{
+						console.log('doc updated with id '+result.id );
+						this.doc=result;
+					});
+
+				});
+			}
+			
+		}else
+		{
+			console.log('Guest');
+			
+			if (docId != null && docId != undefined) {
+				console.log('loading previous info');
+				this.documentService.getDocumentById(docId).subscribe(doc => {
+					console.log('Angular is ' + doc);
+					this.guest = doc.guest;
+					if (this.guest == undefined)
+					{
+						this.guest = new Map();
+					}
+					this.data = doc.content;
+					this.bottonName = 'Actualizar';
+					this.doc = doc;
+					this.dataReady = true;
+					this.online = doc.online;
+					if ( this.route.snapshot.params.id2 in this.guest )
+					{
+						this.loggedUser = new User();
+						this.loggedUser.email = this.guest [this.route.snapshot.params.id2 ];
+						this.online.push(this.loggedUser.email);
+						doc.online = this.online ;
+						this.documentService.putDocument(this.doc).subscribe(result=>{
+							console.log('doc updated with id '+result.id );
+							this.doc=result;
+						});
+						console.log(" EXISTE");
+					}else
+					{
+						console.log("NO EXISTE");
+						this.guest = undefined;
+						//console.log(doc.content);
+						this.data = undefined;
+						this.bottonName = 'Actualizar';
+						this.doc = undefined;
+						this.dataReady = false;
+					}
+				});
+			}
+			
+
 		}
-		var email = this.authService.getUserEmail();
-		if (email != null && email != undefined) {
-			this.userService.getDocumentById(email).subscribe(user => {
-				this.loggedUser = user;
-				this.loggedIn = true;
-				console.log(user.email);
-				this.dataReady = true;
-			});
-		}
+		
 	}
 
 	public onChange({ editor }: ChangeEvent) {
@@ -96,6 +161,35 @@ export class EditorComponent {
 
 		console.log(this.currentState);
 	}
+	compartir()
+	{
+		var correo = prompt("Correo al que desea compartir", "");
+		var random = randomString();
+		if (correo != null && correo !="")
+		{
+			if (this.guest == undefined)
+		{
+			this.guest = new Map();
+		}
+		this.guest [random]= correo;
+		this.doc.guest= this.guest;
+		//var date = new Date(Date.now());
+		//let newDoc = new Doc(this.guest ,this.currentState,  date,  this.loggedUser.email,this.docTitle );
+		this.doc.name = this.docTitle;
+		this.doc.content = this.currentState;
+		
+		this.documentService.putDocument(this.doc).subscribe(result=>{
+			console.log('doc updated with id '+result.id );
+			this.doc=result;
+		});
+		
+		alert("El link es: "+"http://localhost:4200/guest/"+this.doc.id+"/"+random);
+		}
+		
+		
+	}
+
+
 
 	/* Método para guardar el documento*/
 	onClicked(form: NgForm) {
@@ -107,7 +201,14 @@ export class EditorComponent {
 		// }
 		if (this.doc == null) {
 			var date = new Date(Date.now());
-			let newDoc = new Doc(this.docTitle, this.loggedUser.email, this.currentState, date);
+			this.online = [this.loggedUser.email];
+			if (this.guest == undefined)
+					{
+						this.guest = new Map();
+					}
+			
+			let newDoc = new Doc(this.guest ,this.currentState,  date,  this.loggedUser.email,this.docTitle,this.online );
+			console.log('doc data:' + this.currentState);
 			this.documentService.postDocument(newDoc).subscribe(result => {
 				console.log(result);
 				console.log('posted ' + result.id);
@@ -124,6 +225,9 @@ export class EditorComponent {
 			this.doc.name = this.docTitle;
 			this.doc.content = this.currentState;
 			this.doc.lastEdited = new Date(Date.now());
+			if (this.online == undefined )
+				this.online =[];
+			this.online.push(this.loggedUser.email);
 			this.documentService.putDocument(this.doc).subscribe(result=>{
 				console.log('doc updated with id '+result.id );
 				this.doc=result;
@@ -135,7 +239,10 @@ export class EditorComponent {
 	accept() {
 		this.isDisabled = !this.isDisabled;
 	}
+	
 }
+
+
 
 function handleDocIdInUrl() {
 	let id = getDocIdFromUrl();
@@ -166,5 +273,21 @@ function generateUrlWithDocId(id: string) {
 	return `${window.location.href.split('?')[0]}?channelId=${id}`;
 }
 
+
+window.onbeforeunload = function(){
+	// Do something
+	const index = this.online.indexOf(this.loggedUser.email);
+	if (index > -1) {
+		this.online.splice(index, 1);
+	}
+	this.doc.online=this.online;
+	
+	this.documentService.removeOnlineDocument(this.doc.id,this.loggedUser.email).subscribe(result=>{
+		console.log('doc updated with id '+result.id );
+		this.doc=result;
+	});
+  
+
+ }
 
 

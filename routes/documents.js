@@ -28,16 +28,18 @@ router.get('/', async (req, res) => {
 
 router.post('/', async (req, res) => {
   try {
-    console.log(req.body);
 
     let docRef = db.collection('documents').doc();
-
+    console.log(req.body);
     let setData = await docRef.set({
       name: req.body.name,
       author: req.body.author,
       content: req.body.content,
       lastEdited: req.body.lastEdited,
+      guest: req.body.guest,
+      online: req.body.online
     });
+    
 
     var ans = db.collection('documents').doc(docRef.id);
     var doc = await ans.get();
@@ -93,6 +95,32 @@ router.put('/:id', async (req, res) => {
   }
 
 });
+
+router.delete('/:id/:ida', function (req, res, next) {
+  try 
+  {
+    console.log(req.params);
+  let id = (req.params.id);
+  let id2 = (req.params.ida);
+  console.log("PARO"+ id +" "+id2);
+  let FieldValue = require('firebase-admin').firestore.FieldValue;
+  db.collection('documents').doc(id).update({
+    "online": FieldValue.arrayRemove(id2)
+ });
+ var docu = db.collection('documents').doc(id);
+ let getDoc = docu.get();
+ console.log('data is' + getDoc.data());
+ var ans = getDoc.data();
+ ans.id = getDoc.id;
+ console.log('ans is ' + ans);
+ res.send(ans);
+  }catch (e) {
+    console.log(e);
+    res.status(400).send(new Error('error handling doc'));
+  }
+  
+  
+ });
 
 router.get('/userDocuments/:id', async (req,res)=>{
   try{

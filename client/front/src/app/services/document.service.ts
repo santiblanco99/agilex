@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, SystemJsNgModuleLoader } from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import { Observable } from 'rxjs';
 import {Doc} from 'src/app/models/document';
@@ -42,6 +42,10 @@ export class DocumentService {
 
   getMyDocuments(author:String):Observable<Doc[]>{
     return this.http.get<Doc[]>(`http://localhost:5000/documents/userDocuments/${author}`);
+  }
+  removeOnlineDocument (val1:String, val2:String):Observable<Doc>{
+    console.log("ALIMINO");
+    return this.http.delete<Doc>('http://localhost:5000/documents/'+val1+'/'+val2);
   }
 }
 
