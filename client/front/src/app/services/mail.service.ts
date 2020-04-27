@@ -14,6 +14,7 @@ const httpOptions = {
 export class MailService {
 
   constructor(private http: HttpClient) { }
+  
   sendMail( correo:String , docTitle:String, id:String , random:String , yo :String):Observable<Mail> {
     console.log('send mail');
     console.log("KA "+'http://localhost:5000/mail/'+correo+'/'+docTitle+'/'+id+'/'+random+'/'+yo)

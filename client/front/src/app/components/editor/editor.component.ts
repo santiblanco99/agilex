@@ -49,12 +49,12 @@ export class EditorComponent {
 
 	public bottonName: String;
 
-	public guest:Map <String,String>;
+	public guest: Map<String, String>;
 
-	public online: String [];
+	public online: String[];
 
 	public correoAgilex = 'agilexgroupcol@gmail.com';
-	
+
 
 	public config = {
 		cloudServices: {
@@ -71,73 +71,72 @@ export class EditorComponent {
 
 	};
 
-	constructor(private documentService: DocumentService, private authService: AuthService, private userService: UserService, private  mailService : MailService,private route: ActivatedRoute) {
+	constructor(private documentService: DocumentService, private authService: AuthService, private userService: UserService, private mailService: MailService, private route: ActivatedRoute) {
 
 	};
 
 	ngOnInit(): void {
 		this.bottonName = 'Guardar';
 		var docId = this.route.snapshot.params.id;
-		if (this.route.snapshot.params.id2 == undefined )
-		{
+		var email = this.authService.getUserEmail();
+		if (email != null && email != undefined) {
+			this.userService.getDocumentById(email).subscribe(user => {
+				this.loggedUser = user;
+				this.loggedIn = true;
+				console.log(user.email);
+				//this.dataReady = true;
+				if (this.online == undefined) {
+					this.online = [];
+				}
+				this.online.push(this.loggedUser.email);
+
+			});
+		}
+		if (this.route.snapshot.params.id2 == undefined) {
+			console.log('entrando por aqui');
 			if (docId != null && docId != undefined) {
 				console.log('loading previous info');
 				this.documentService.getDocumentById(docId).subscribe(doc => {
 					console.log('Angular is ' + doc.id);
-					//console.log(doc.content);
-					this.data = doc.content;
-					this.bottonName = 'Actualizar';
 					this.doc = doc;
-					this.dataReady = true;
+					this.doc.online = this.online;
+					this.documentService.putDocument(this.doc).subscribe(result => {
+						console.log('doc updated with id ' + result.id);
+						this.doc = result;
+						this.data = result.content;
+						this.docTitle = doc.name;
+						console.log(this.data);
+						this.bottonName = 'Actualizar';
+						this.dataReady = true;
+					});
+					
 					try {
 						this.online = doc.online;
-					} catch ({error}) {
-						
+					} catch ({ error }) {
+
 					}
 					try {
 						this.guest = doc.guest;
-					} catch ({error}) {
-						
+					} catch ({ error }) {
+
 					}
-					
-					
-					
-					
-				
-				});
-			}
-			var email = this.authService.getUserEmail();
-			if (email != null && email != undefined) {
-				this.userService.getDocumentById(email).subscribe(user => {
-					this.loggedUser = user;
-					this.loggedIn = true;
-					console.log(user.email);
-					this.dataReady = true;
-					if (this.online == undefined)
-					{
-						this.online =[];
-					}
-					this.online.push(this.loggedUser.email);
-					this.doc.online = this.online ;
-					this.documentService.putDocument(this.doc).subscribe(result=>{
-						console.log('doc updated with id '+result.id );
-						this.doc=result;
-					});
 
 				});
+			} else {
+
+				this.dataReady = true;
 			}
-			
-		}else
-		{
+
+
+		} else {
 			console.log('Guest');
-			
+
 			if (docId != null && docId != undefined) {
 				console.log('loading previous info');
 				this.documentService.getDocumentById(docId).subscribe(doc => {
 					console.log('Angular is ' + doc);
 					this.guest = doc.guest;
-					if (this.guest == undefined)
-					{
+					if (this.guest == undefined) {
 						this.guest = new Map();
 					}
 					this.data = doc.content;
@@ -147,22 +146,20 @@ export class EditorComponent {
 					this.online = doc.online;
 					var date = new Date(Date.now());
 
-					this.doc.guest = this.guest ;
-					this.doc.online = this.online ;
-				
-					if ( this.route.snapshot.params.id2 in this.guest )
-					{
+					this.doc.guest = this.guest;
+					this.doc.online = this.online;
+
+					if (this.route.snapshot.params.id2 in this.guest) {
 						this.loggedUser = new User();
-						this.loggedUser.email = this.guest [this.route.snapshot.params.id2 ];
+						this.loggedUser.email = this.guest[this.route.snapshot.params.id2];
 						this.online.push(this.loggedUser.email);
-						doc.online = this.online ;
-						this.documentService.putDocument(this.doc).subscribe(result=>{
-							console.log('doc updated with id '+result.id );
-							this.doc=result;
+						doc.online = this.online;
+						this.documentService.putDocument(this.doc).subscribe(result => {
+							console.log('doc updated with id ' + result.id);
+							this.doc = result;
 						});
 						console.log(" EXISTE");
-					}else
-					{
+					} else {
 						console.log("NO EXISTE");
 						this.guest = undefined;
 						//console.log(doc.content);
@@ -173,10 +170,10 @@ export class EditorComponent {
 					}
 				});
 			}
-			
+
 
 		}
-		
+
 	}
 
 	public onChange({ editor }: ChangeEvent) {
@@ -184,35 +181,38 @@ export class EditorComponent {
 
 		console.log(this.currentState);
 	}
-	compartir()
-	{
-		
+	compartir() {
+
+		if(this.doc == null){
+			alert('debes guardar el documento primero');
+			return;
+		}
 		var correo = prompt("Correo al que desea compartir", "");
 		var random = randomString();
-		if (correo != null && correo !="")
-		{
-			if (this.guest == undefined ||  this.guest == null)
-			{
+		if (correo != null && correo != "") {
+			if (this.guest == undefined || this.guest == null) {
 				this.guest = new Map();
 			}
-			this.guest [random]= correo;
-		
+			this.guest[random] = correo;
+
 			var date = new Date(Date.now());
-			
-			this.doc.guest = this.guest ;
-			this.doc.online = this.online ;
-	
-			this.mailService.sendMail( correo, this.docTitle, this.doc.id, random, this.loggedUser.email );
-			
-			this.documentService.putDocument(this.doc).subscribe(result=>{
-				console.log('doc updated with id '+result.id );
-				this.doc=result;
+
+			this.doc.guest = this.guest;
+			this.doc.online = this.online;
+
+			this.mailService.sendMail(correo, this.docTitle, this.doc.id, random, this.loggedUser.email).subscribe(email => {
+				console.log(email);
 			});
-			
-			alert("El link es: "+"http://localhost:4200/guest/"+this.doc.id+"/"+random);
+
+			this.documentService.putDocument(this.doc).subscribe(result => {
+				console.log('doc updated with id ' + result.id);
+				this.doc = result;
+			});
+
+			alert("El link es: " + "http://localhost:4200/guest/" + this.doc.id + "/" + random);
 		}
-		
-		
+
+
 	}
 
 
@@ -229,17 +229,11 @@ export class EditorComponent {
 			var date = new Date(Date.now());
 			if (this.online == undefined)
 				this.online = [this.loggedUser.email];
-			if (this.guest == undefined)
-			{
+			if (this.guest == undefined) {
 				this.guest = new Map();
 			}
-			this.doc.content = this.currentState;
-			this.doc.lastEdited = new Date(Date.now());
-			this.doc.name = this.docTitle;
-			this.doc.guest = this.guest ;
-			this.doc.online = this.online ;
-			
-			
+			let newDoc =new Doc(this.guest,this.currentState,date,this.loggedUser.email,this.docTitle,this.online);
+			this.doc = newDoc;
 			console.log('doc data:' + this.currentState);
 			this.documentService.postDocument(this.doc).subscribe(result => {
 				console.log(result);
@@ -247,7 +241,7 @@ export class EditorComponent {
 				console.log('doc data:' + result.lastEdited);
 				this.doc = result;
 				this.bottonName = 'Actualizar';
-			},error=>{
+			}, error => {
 				console.log(error);
 				alert('Hubo un error al procesar el documento');
 			});
@@ -257,14 +251,14 @@ export class EditorComponent {
 			this.doc.name = this.docTitle;
 			this.doc.content = this.currentState;
 			this.doc.lastEdited = new Date(Date.now());
-			if (this.online == undefined )
-				this.online =[];
+			if (this.online == undefined)
+				this.online = [];
 			this.online.push(this.loggedUser.email);
-			this.doc.guest = this.guest ;
-			this.doc.online = this.online ;
-			this.documentService.putDocument(this.doc).subscribe(result=>{
-				console.log('doc updated with id '+result.id );
-				this.doc=result;
+			this.doc.guest = this.guest;
+			this.doc.online = this.online;
+			this.documentService.putDocument(this.doc).subscribe(result => {
+				console.log('doc updated with id ' + result.id);
+				this.doc = result;
 			});
 		}
 
@@ -273,7 +267,7 @@ export class EditorComponent {
 	accept() {
 		this.isDisabled = !this.isDisabled;
 	}
-	
+
 }
 
 
@@ -308,20 +302,20 @@ function generateUrlWithDocId(id: string) {
 }
 
 
-window.onbeforeunload = function(){
+window.onbeforeunload = function () {
 	// Do something
 	const index = this.online.indexOf(this.loggedUser.email);
 	if (index > -1) {
 		this.online.splice(index, 1);
 	}
-	this.doc.online=this.online;
-	
-	this.documentService.removeOnlineDocument(this.doc.id,this.loggedUser.email).subscribe(result=>{
-		console.log('doc updated with id '+result.id );
-		this.doc=result;
-	});
-  
+	this.doc.online = this.online;
 
- }
+	this.documentService.removeOnlineDocument(this.doc.id, this.loggedUser.email).subscribe(result => {
+		console.log('doc updated with id ' + result.id);
+		this.doc = result;
+	});
+
+
+}
 
 

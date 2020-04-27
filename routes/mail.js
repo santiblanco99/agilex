@@ -39,13 +39,14 @@ router.get('/:correo/:title/:id/:pi/:si', async (req, res) => {
   transporter.sendMail(mailOptions, function(error, info){
     if (error) {
       console.log(error);
+      res.status(400).send({error: error});
 
     } else {
       console.log('Email sent: ' + info.response);
+      res.json(mailOptions);
     }
     
   });
-  res.send(null);
   
 });
 
