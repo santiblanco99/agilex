@@ -48,7 +48,7 @@ router.post('/', async (req, res) => {
     resp.id = docRef.id;
     res.json(resp);
   }
-    catch (e) {
+  catch (e) {
     console.log(e);
     res.status(400).send(new Error('error handling doc'));
   }

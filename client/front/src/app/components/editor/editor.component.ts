@@ -7,9 +7,11 @@ import { Doc } from 'src/app/models/document.js';
 import { CommonModule } from '@angular/common';
 import { User } from '../../auth/user';
 import { UserService } from '../../services/user.service';
+import { MailService } from '../../services/mail.service';
 import { AuthService } from '../../auth/auth.service';
 import { NgForm } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { Mail } from '../../models/mail';
 
 @Component({
 	selector: 'app-editor',
@@ -50,6 +52,8 @@ export class EditorComponent {
 	public guest:Map <String,String>;
 
 	public online: String [];
+
+	public correoAgilex = 'agilexgroupcol@gmail.com';
 	
 
 	public config = {
@@ -67,7 +71,7 @@ export class EditorComponent {
 
 	};
 
-	constructor(private documentService: DocumentService, private authService: AuthService, private userService: UserService, private route: ActivatedRoute) {
+	constructor(private documentService: DocumentService, private authService: AuthService, private userService: UserService, private  mailService : MailService,private route: ActivatedRoute) {
 
 	};
 
@@ -85,7 +89,21 @@ export class EditorComponent {
 					this.bottonName = 'Actualizar';
 					this.doc = doc;
 					this.dataReady = true;
-					this.online = doc.online;
+					try {
+						this.online = doc.online;
+					} catch ({error}) {
+						
+					}
+					try {
+						this.guest = doc.guest;
+					} catch ({error}) {
+						
+					}
+					
+					
+					
+					
+				
 				});
 			}
 			var email = this.authService.getUserEmail();
@@ -95,13 +113,12 @@ export class EditorComponent {
 					this.loggedIn = true;
 					console.log(user.email);
 					this.dataReady = true;
-					this.online = this.doc.online;
 					if (this.online == undefined)
 					{
 						this.online =[];
 					}
 					this.online.push(this.loggedUser.email);
-					this.doc.online = this.online;
+					this.doc.online = this.online ;
 					this.documentService.putDocument(this.doc).subscribe(result=>{
 						console.log('doc updated with id '+result.id );
 						this.doc=result;
@@ -128,6 +145,11 @@ export class EditorComponent {
 					this.doc = doc;
 					this.dataReady = true;
 					this.online = doc.online;
+					var date = new Date(Date.now());
+
+					this.doc.guest = this.guest ;
+					this.doc.online = this.online ;
+				
 					if ( this.route.snapshot.params.id2 in this.guest )
 					{
 						this.loggedUser = new User();
@@ -164,20 +186,23 @@ export class EditorComponent {
 	}
 	compartir()
 	{
+		
 		var correo = prompt("Correo al que desea compartir", "");
 		var random = randomString();
 		if (correo != null && correo !="")
 		{
-			if (this.doc.guest == undefined)
+			if (this.guest == undefined ||  this.guest == null)
 			{
-				this.doc.guest = new Map();
+				this.guest = new Map();
 			}
-			this.doc.guest [random]= correo;
-			this.guest = this.doc.guest;
-			//var date = new Date(Date.now());
-			//let newDoc = new Doc(this.guest ,this.currentState,  date,  this.loggedUser.email,this.docTitle );
-		//	this.doc.name = this.docTitle;
-			//this.doc.content = this.currentState;
+			this.guest [random]= correo;
+		
+			var date = new Date(Date.now());
+			
+			this.doc.guest = this.guest ;
+			this.doc.online = this.online ;
+	
+			this.mailService.sendMail( correo, this.docTitle, this.doc.id, random, this.loggedUser.email );
 			
 			this.documentService.putDocument(this.doc).subscribe(result=>{
 				console.log('doc updated with id '+result.id );
@@ -202,16 +227,21 @@ export class EditorComponent {
 		// }
 		if (this.doc == null) {
 			var date = new Date(Date.now());
-			this.online = [this.loggedUser.email];
-			if (this.doc.guest == undefined)
+			if (this.online == undefined)
+				this.online = [this.loggedUser.email];
+			if (this.guest == undefined)
 			{
-				this.doc.guest = new Map();
+				this.guest = new Map();
 			}
-			this.guest = this.doc.guest;
+			this.doc.content = this.currentState;
+			this.doc.lastEdited = new Date(Date.now());
+			this.doc.name = this.docTitle;
+			this.doc.guest = this.guest ;
+			this.doc.online = this.online ;
 			
-			let newDoc = new Doc(this.guest ,this.currentState,  date,  this.loggedUser.email,this.docTitle,this.online );
+			
 			console.log('doc data:' + this.currentState);
-			this.documentService.postDocument(newDoc).subscribe(result => {
+			this.documentService.postDocument(this.doc).subscribe(result => {
 				console.log(result);
 				console.log('posted ' + result.id);
 				console.log('doc data:' + result.lastEdited);
@@ -230,6 +260,8 @@ export class EditorComponent {
 			if (this.online == undefined )
 				this.online =[];
 			this.online.push(this.loggedUser.email);
+			this.doc.guest = this.guest ;
+			this.doc.online = this.online ;
 			this.documentService.putDocument(this.doc).subscribe(result=>{
 				console.log('doc updated with id '+result.id );
 				this.doc=result;
