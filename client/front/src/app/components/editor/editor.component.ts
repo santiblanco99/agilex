@@ -99,7 +99,11 @@ export class EditorComponent {
 				this.documentService.getDocumentById(docId).subscribe(doc => {
 					console.log('Angular is ' + doc.id);
 					this.doc = doc;
-					this.doc.online = this.online;
+					try {
+						this.online = this.doc.online;
+					} catch ({ error }) {
+
+					}
 					this.documentService.putDocument(this.doc).subscribe(result => {
 						console.log('doc updated with id ' + result.id);
 						this.doc = result;
@@ -112,6 +116,11 @@ export class EditorComponent {
 					
 					try {
 						this.online = doc.online;
+						this.online.push(this.loggedUser.email);
+						this.documentService.putDocument(this.doc).subscribe(result => {
+							console.log('doc updated with id ' + result.id);
+							this.doc = result;
+						});
 					} catch ({ error }) {
 
 					}
@@ -189,7 +198,22 @@ export class EditorComponent {
 		}
 		var correo = prompt("Correo al que desea compartir", "");
 		var random = randomString();
-		if (correo != null && correo != "") {
+		var esta = false;
+		if (correo != null && correo != "")
+		for (const v in this.guest )
+		{
+			console.log(this.guest);
+			console.log("VEA "+v);
+			if (this.guest[v] == correo)
+			{
+				esta=true;
+			this.mailService.sendMail(correo, this.docTitle, this.doc.id, v, this.loggedUser.email).subscribe(email => {
+				console.log(email);
+			});
+			}
+				
+		}
+		if (correo != null && correo != "" && !esta)  {
 			if (this.guest == undefined || this.guest == null) {
 				this.guest = new Map();
 			}

@@ -108,12 +108,15 @@ router.delete('/:id/:ida', function (req, res, next) {
     "online": FieldValue.arrayRemove(id2)
  });
  var docu = db.collection('documents').doc(id);
- let getDoc = docu.get();
- console.log('data is' + getDoc.data());
- var ans = getDoc.data();
- ans.id = getDoc.id;
- console.log('ans is ' + ans);
- res.send(ans);
+ 
+ res.send({
+  "name": "Prueba uno",
+  "content": "<p>Esta es la prueba uno actualizada</p>",
+  "lastEdited": "2020-04-25T19:47:48.361Z",
+  "id": "9RndSNl1mvxQWoKoRkCz",
+  "online": [],
+  "author": "santiagowhite99@hotmail.com"
+});
   }catch (e) {
     console.log(e);
     res.status(400).send(new Error('error handling doc'));

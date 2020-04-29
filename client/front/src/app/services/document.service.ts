@@ -43,9 +43,14 @@ export class DocumentService {
   getMyDocuments(author:String):Observable<Doc[]>{
     return this.http.get<Doc[]>(`http://localhost:5000/documents/userDocuments/${author}`);
   }
-  removeOnlineDocument (val1:String, val2:String):Observable<Doc>{
-    console.log("ALIMINO");
-    return this.http.delete<Doc>('http://localhost:5000/documents/'+val1+'/'+val2);
+  removeOnlineDocument (val1:String, val2:String){
+    console.log("ALIMINO "+'http://localhost:5000/documents/'+val1+'/'+val2);
+    this.http
+  .delete('http://localhost:5000/documents/'+val1+'/'+val2, httpOptions)
+  .subscribe((s) => {
+    console.log(s);
+  });
+    
   }
 }
 
