@@ -12,6 +12,8 @@ import { AuthService } from '../../auth/auth.service';
 import { NgForm } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Mail } from '../../models/mail';
+import { DocusignService } from 'src/app/services/docusign.service.js';
+import { DocuSignData } from 'src/app/models/DocusignData.js';
 
 @Component({
 	selector: 'app-editor',
@@ -71,7 +73,7 @@ export class EditorComponent {
 
 	};
 
-	constructor(private documentService: DocumentService, private authService: AuthService, private userService: UserService, private mailService: MailService, private route: ActivatedRoute) {
+	constructor(private documentService: DocumentService, private authService: AuthService, private userService: UserService, private mailService: MailService, private route: ActivatedRoute, private docSignService: DocusignService) {
 
 	};
 
@@ -290,6 +292,15 @@ export class EditorComponent {
 
 	accept() {
 		this.isDisabled = !this.isDisabled;
+	}
+
+	generateSignature(){
+		let data = new DocuSignData(this.loggedUser.nombre,this.loggedUser.email,'');
+		this.docSignService.getSignature(data).subscribe(result =>{
+			console.log(result);
+			alert('Petición de firma generada al correo ' + this.loggedUser.email );
+		});
+
 	}
 
 }
