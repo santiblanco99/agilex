@@ -14,6 +14,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Mail } from '../../models/mail';
 import { DocusignService } from 'src/app/services/docusign.service.js';
 import { DocuSignData } from 'src/app/models/DocusignData.js';
+import * as html2pdf from 'html2pdf.js'
 
 @Component({
 	selector: 'app-editor',
@@ -301,6 +302,31 @@ export class EditorComponent {
 			alert('Petición de firma generada al correo ' + this.loggedUser.email );
 		});
 
+	}
+
+
+	generatePDF(){
+		if (this.currentState == null) {
+			this.currentState = this.data;
+		}
+
+		var texto = this.currentState.toString()
+		var element = document.createElement('div')
+		element.innerHTML = texto
+		
+		const options = {
+			filename: 'VersiónFinalEscritura.pdf',
+			image: {type: 'jpeg'},
+			html2canvas: {},
+			jsPDF: {orientation: 'landscape'}
+		};
+
+		const content: Element = element
+
+		html2pdf()
+		.from(content)
+		.set(options)
+		.save();
 	}
 
 }
