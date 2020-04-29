@@ -5,6 +5,7 @@ var userRoutes = require('./routes/users');
 var mailRoutes = require('./routes/mail');
 const cors = require('cors');
 var bodyParser = require('body-parser');
+const docuSignRoutes = require('./routes/docusign');
 NODE_TLS_REJECT_UNAUTHORIZED=0;
 
 
@@ -17,7 +18,7 @@ app.use(bodyParser.json());
 app.use('/documents',documentRoutes);
 app.use('/users',userRoutes);
 app.use('/mail',mailRoutes);
-
+app.use('/docusign',docuSignRoutes);
 
 
 

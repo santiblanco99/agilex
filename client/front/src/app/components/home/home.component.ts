@@ -3,6 +3,8 @@ import { AuthService } from 'src/app/auth/auth.service';
 import { isUndefined } from 'util';
 import { UserService } from 'src/app/services/user.service';
 import { User } from 'src/app/auth/user';
+import { DocusignService } from 'src/app/services/docusign.service';
+import { DocuSignData } from 'src/app/models/DocusignData';
 
 @Component({
   selector: 'app-home',
@@ -16,7 +18,7 @@ export class HomeComponent implements OnInit {
 
   public loggedUser: User;
 
-  constructor(private authService: AuthService, private userService: UserService) { }
+  constructor(private authService: AuthService, private userService: UserService, private dousign: DocusignService) { }
 
   ngOnInit(): void {
 
@@ -26,6 +28,11 @@ export class HomeComponent implements OnInit {
         console.log(user.email);
         this.loggedUser = user;
         this.loggedIn = true;
+        // let data = new DocuSignData('Prueba',user.email,'Prueba');
+        // this.dousign.getSignature(data).subscribe(result=>{
+        //   console.log('docusign: '+result);
+        // });
+
       });
     }
   }
