@@ -296,7 +296,7 @@ export class EditorComponent {
 	}
 
 	generateSignature(){
-		let data = new DocuSignData(this.loggedUser.nombre,this.loggedUser.email,'');
+		let data = new DocuSignData([this.loggedUser.nombre],[this.loggedUser.email],[],[],this.currentState);
 		this.docSignService.getSignature(data).subscribe(result =>{
 			console.log(result);
 			alert('Petición de firma generada al correo ' + this.loggedUser.email );

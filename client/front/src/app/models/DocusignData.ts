@@ -1,12 +1,16 @@
 export class DocuSignData {
-    signerName: string;
-    signerEmail: string;
-    fileName: string;
+    signerNames: string[];
+    signerEmails: string[];
+    ccEmails: string[];
+    ccNames: string[];
+    fileContent: String;
     
-    constructor(signerName: string, signerEmail: string, fileName: string){
-        this.signerName = signerName;
-        this.signerEmail = signerEmail;
-        this.fileName = fileName;
+    constructor(signerNames: string[], signerEmails: string[], ccEmails: string[], ccNames: string[], fileContent: String){
+        this.signerNames = signerNames;
+        this.signerEmails = signerEmails;
+        this.ccNames = ccNames;
+        this.ccEmails = ccEmails;
+        this.fileContent = fileContent;
     }
     
 }
