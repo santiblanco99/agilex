@@ -15,6 +15,7 @@ import { Mail } from '../../models/mail';
 import { DocusignService } from 'src/app/services/docusign.service.js';
 import { DocuSignData } from 'src/app/models/DocusignData.js';
 import * as html2pdf from 'html2pdf.js'
+import { PdfData } from 'src/app/models/PdfData.js';
 
 @Component({
 	selector: 'app-editor',
@@ -302,6 +303,19 @@ export class EditorComponent {
 			alert('Petición de firma generada al correo ' + this.loggedUser.email );
 		});
 
+	}
+
+	toPdf(){
+		if (this.currentState == null) {
+			this.currentState = this.data;
+		}
+		var docId = this.route.snapshot.params.id;
+
+		let data = new PdfData(docId, this.currentState);
+		this.docSignService.createpdf(data).subscribe(result =>{
+			console.log(result);
+			alert('Petición de creación pdf' + this.loggedUser.email );
+		})
 	}
 
 
