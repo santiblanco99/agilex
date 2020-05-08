@@ -319,29 +319,6 @@ export class EditorComponent {
 	}
 
 
-	generatePDF(){
-		if (this.currentState == null) {
-			this.currentState = this.data;
-		}
-
-		var texto = this.currentState.toString()
-		var element = document.createElement('div')
-		element.innerHTML = texto
-		
-		const options = {
-			filename: 'VersiónFinalEscritura.pdf',
-			image: {type: 'jpeg'},
-			html2canvas: {},
-			jsPDF: {orientation: 'landscape'}
-		};
-
-		const content: Element = element
-
-		html2pdf()
-		.from(content)
-		.set(options)
-		.save();
-	}
 
 }
 
