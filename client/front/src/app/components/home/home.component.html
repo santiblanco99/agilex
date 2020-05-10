@@ -1,14 +1,40 @@
 
-    <div class="jumbotron" *ngIf="loggedIn;else otro">
+   
+<div class="container" *ngIf="loggedIn;else otro">
+    <div class="jumbotron" >
         <div class="container">
             <h1 class="display-3">Bienvenido a Agilex, {{this.loggedUser.nombre}}</h1>
         </div>
     </div>
+    <br>
+    <br>
+    <h2>La forma más ágil de revisar escrituras</h2>
+<br>
+<br>
+
+  <div class="card-container">
+    <a class="card" target="_blank" rel="noopener"  routerLink='newDocument'>
+
+      <span>Nuevo documento</span>
+
+      <svg class="material-icons" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>    </a>
+
+    <a class="card" target="_blank" rel="noopener" routerLink='documents'>
+      
+      <span>Mis documentos</span>
+
+      <svg class="material-icons" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+    </a>
+
+  </div>
+
+</div>
 
     <ng-template #otro>
         <div class="jumbotron">
             <div class="container">
                 <h1 class="display-3">Bienvenido a Agilex</h1>
+                <h2 class="display-4">La forma más ágil de revisar escrituras</h2>
             </div>
         </div>
     </ng-template>
