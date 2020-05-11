@@ -16,6 +16,7 @@ import { DocusignService } from 'src/app/services/docusign.service.js';
 import { DocuSignData } from 'src/app/models/DocusignData.js';
 import * as html2pdf from 'html2pdf.js'
 import { PdfData } from 'src/app/models/PdfData.js';
+import { getLoadSaveIntegration } from './load-save-integration';
 
 @Component({
 	selector: 'app-editor',
@@ -59,7 +60,10 @@ export class EditorComponent {
 
 	public correoAgilex = 'agilexgroupcol@gmail.com';
 
-
+	public userReady = false;
+	public miData;
+	public trackChanges;
+	public comments;
 	public config = {
 		cloudServices: {
 			uploadUrl: 'https://70531.cke-cs.com/easyimage/upload/',
@@ -71,7 +75,8 @@ export class EditorComponent {
 		},
 		presenceList: {
 			container: this.presenceList,
-		}
+		},
+		
 
 	};
 
@@ -81,8 +86,11 @@ export class EditorComponent {
 
 	ngOnInit(): void {
 		this.bottonName = 'Guardar';
+
 		var docId = this.route.snapshot.params.id;
 		var email = this.authService.getUserEmail();
+
+		//Dueño
 		if (email != null && email != undefined) {
 			this.userService.getDocumentById(email).subscribe(user => {
 				this.loggedUser = user;
@@ -96,6 +104,8 @@ export class EditorComponent {
 
 			});
 		}
+
+		//Dueño del documento  -> próximamente el que tenga cuenta
 		if (this.route.snapshot.params.id2 == undefined) {
 			console.log('entrando por aqui');
 			if (docId != null && docId != undefined) {
@@ -108,16 +118,28 @@ export class EditorComponent {
 					} catch ({ error }) {
 
 					}
+					try {
+						this.trackChanges = this.doc.trackChanges;
+					} catch ({ error }) {
+
+					}
+					try {
+						this.comments = doc.commets;
+					} catch ({ error }) {
+
+					}
 					this.documentService.putDocument(this.doc).subscribe(result => {
 						console.log('doc updated with id ' + result.id);
 						this.doc = result;
-						this.data = result.content;
+						//this.data = result.content;
+						//this.data=" ";
+						this.miData = result.content;
 						this.docTitle = doc.name;
-						console.log(this.data);
+						//console.log(this.data);
 						this.bottonName = 'Actualizar';
 						this.dataReady = true;
 					});
-					
+
 					try {
 						this.online = doc.online;
 						this.online.push(this.loggedUser.email);
@@ -139,9 +161,9 @@ export class EditorComponent {
 
 				this.dataReady = true;
 			}
-
-
-		} else {
+		}
+		//Invitado
+		else {
 			console.log('Guest');
 
 			if (docId != null && docId != undefined) {
@@ -152,7 +174,11 @@ export class EditorComponent {
 					if (this.guest == undefined) {
 						this.guest = new Map();
 					}
-					this.data = doc.content;
+					//this.data = doc.content;
+					//this.data = result.content;
+						//this.data=" ";
+					this.miData = doc.content;
+
 					this.bottonName = 'Actualizar';
 					this.doc = doc;
 					this.dataReady = true;
@@ -161,11 +187,13 @@ export class EditorComponent {
 
 					this.doc.guest = this.guest;
 					this.doc.online = this.online;
+					this.comments = doc.commets;
 
 					if (this.route.snapshot.params.id2 in this.guest) {
 						this.loggedUser = new User();
 						this.loggedUser.email = this.guest[this.route.snapshot.params.id2];
 						this.online.push(this.loggedUser.email);
+						this.trackChanges = doc.trackChanges;
 						doc.online = this.online;
 						this.documentService.putDocument(this.doc).subscribe(result => {
 							console.log('doc updated with id ' + result.id);
@@ -186,13 +214,146 @@ export class EditorComponent {
 
 
 		}
+		console.log("NO MAMES" + this.Editor.plugins);
 
-	}
+
+		}
+
 
 	public onChange({ editor }: ChangeEvent) {
+		
+		const usersPlugin = editor.plugins.get('Users');
+		const trackPlugin = editor.plugins.get('TrackChanges');
+		const commetsPlugin = editor.plugins.get('CommentsRepository');
 		this.currentState = editor.getData();
+		//editor.execute( 'trackChanges' );
+		console.log(this.userReady+" HELP");
+		//La primera vez que se edita
+		if (!this.userReady  )
+		{
+			this.userReady =true;
+			
+			//Agregar nombre e email
+			usersPlugin.me.name = this.loggedUser.email;
+			usersPlugin.me.id = this.loggedUser.email;
+			if (this.loggedUser.nombre != null && this.loggedUser.nombre != undefined)
+				usersPlugin.me.name = this.loggedUser.nombre;
+			usersPlugin.addUser({
+				id: this.loggedUser.email,
+				name: usersPlugin.me.name
+			});
 
-		console.log(this.currentState);
+			//Agregar demás usuarios
+			for (const v in this.guest) {
+				try {
+					usersPlugin.addUser({
+						id: this.guest[v],
+						name: this.guest[v]
+					});
+				}
+				catch (err) {
+
+				}
+			}
+
+			try {
+				usersPlugin.addUser({
+					id: this.doc.author,
+					name: this.doc.author
+				});
+			}
+			catch (err) {
+
+			}
+
+			//Agregar comentarios
+			if (this.comments != null && this.comments != undefined) {
+				
+				console.log(commetsPlugin.getCommentThreads());
+				for (const v in this.comments) {
+					try {
+						this.comments[v].isFromAdapter = true;
+
+						commetsPlugin.addCommentThread(this.comments[v]);
+
+					}
+					catch (err) {
+
+					}
+				}
+				console.log(commetsPlugin.getCommentThreads());
+			}
+			try
+			{
+				editor.data.set( this.miData, { suppressErrorInCollaboration: true } );
+			}catch (error)
+			{
+
+			}
+		}
+		// Por si algun momento sirve track changes 
+		if (!this.userReady && false) {
+			
+
+			if (this.trackChanges != null && this.trackChanges != undefined) {
+				for (const v in this.trackChanges) {
+					console.log("TRA" + this.trackChanges[v]);
+					trackPlugin.addSuggestion({
+						id: this.trackChanges[v].id,         // String
+						type: this.trackChanges[v].type,          // String
+						authorId: this.trackChanges[v].authorId,         // String
+						createdAt: new Date(this.trackChanges[v].createdAt), // Date
+						hasComments: this.trackChanges[v].hasComments,       // Boolean
+						data: this.trackChanges[v].data             // Object|null
+					});
+					// trackPlugin.addSuggestion({
+					// });
+					trackPlugin.addSuggestion({
+						id: this.trackChanges[v].id,
+						type: 'insertion',
+						authorId: this.trackChanges[v].authorId,
+						createdAt: new Date(2019, 1, 13, 11, 20, 48)
+					});
+					// console.log("PUEDE");
+					// console.log(trackPlugin.getSuggestions());
+					try {
+						// console.log("TRA"+this.trackChanges[v]);
+						// trackPlugin.addSuggestion({
+						// 	id: this.trackChanges[v].id,         // String
+						// 	type: this.trackChanges[v].type,          // String
+						// 	authorId: this.trackChanges[v].authorId,         // String
+						// 	createdAt: new Date(this.trackChanges[v].createdAt ), // Date
+						// 	hasComments: this.trackChanges[v].hasComments,       // Boolean
+						// 	data: this.trackChanges[v].data             // Object|null
+						// });
+					}
+					catch (err) {
+						console.log("ERROR :C");
+					}
+				}
+			}
+			usersPlugin.me.id = this.loggedUser.email;
+			console.log("YO" + editor.plugins.get('Users'));
+			console.log(editor.plugins.get('TrackChanges'));
+			var yo = editor.plugins.get('TrackChanges').getSuggestions()[0];
+			yo.id = "BUENIS";
+			editor.plugins.get('TrackChanges').addSuggestion(yo);
+			//editor.data.set( this.miData, { suppressErrorInCollaboration: true } );
+
+		}
+
+
+
+
+
+		
+		if (editor.plugins.get('CommentsRepository') != null ||
+			editor.plugins.get('CommentsRepository').getCommentThreads() != null)
+			this.comments = editor.plugins.get('CommentsRepository').getCommentThreads();
+		console.log(editor.plugins.get('TrackChanges').getSuggestions());
+		if (editor.plugins.get('TrackChanges') != null ||
+			editor.plugins.get('TrackChanges').getSuggestions() != null)
+			this.trackChanges = editor.plugins.get('TrackChanges').getSuggestions();
 	}
 	compartir() {
 
@@ -260,7 +421,13 @@ export class EditorComponent {
 			if (this.guest == undefined) {
 				this.guest = new Map();
 			}
-			let newDoc =new Doc(this.guest,this.currentState,date,this.loggedUser.email,this.docTitle,this.online);
+			if (this.trackChanges == undefined) {
+				this.trackChanges = [new Map()];
+			}
+			if (this.comments == undefined) {
+				this.comments = [new Map()];
+			}
+			let newDoc = new Doc(this.guest, this.currentState, date, this.loggedUser.email, this.docTitle, this.online, this.trackChanges, this.comments);
 			this.doc = newDoc;
 			console.log('doc data:' + this.currentState);
 			this.documentService.postDocument(this.doc).subscribe(result => {
@@ -276,6 +443,7 @@ export class EditorComponent {
 		}
 		else {
 			console.log(this.doc);
+
 			this.doc.name = this.docTitle;
 			this.doc.content = this.currentState;
 			this.doc.lastEdited = new Date(Date.now());
@@ -291,6 +459,7 @@ export class EditorComponent {
 		}
 
 	}
+
 
 	accept() {
 		this.isDisabled = !this.isDisabled;
