@@ -41,6 +41,18 @@ router.post('/', async (req, res) => {
     
     while (n != -1) {
       var hasta = yo.indexOf(':', n);
+      var inte = yo.indexOf(' type="',n);
+      var typeE = yo.substring(inte,yo.indexOf ('"',inte+'type="'.length+1)+1 );
+      while (typeE != ' type="start"'  && n != -1)
+      {
+        console.log("BUEN"+typeE)
+        var n = yo.indexOf('<suggestion id="', n + size);
+        hasta = yo.indexOf(':', n);
+        inte = yo.indexOf(' type="',n);
+        typeE = yo.substring(inte,yo.indexOf ('"',inte+' type="'.length+1)+1 );
+      }
+      if (n == -1)
+        break;
       var id = yo.substring(n + size, hasta);
       var hasta_id = yo.indexOf('"', hasta);
       var idUser = yo.substring(hasta + 1, hasta_id);
@@ -54,19 +66,40 @@ router.post('/', async (req, res) => {
       //mensage
       var message;
       if (type == "insertion") {
-        message = "<p> insertó " + yo.substring(yo.indexOf("n>", hasta + 1) + 2, yo.indexOf("<suggestion", hasta + 1)) + " </p>";
+      console.log(yo);
+        dentro =yo.substring(yo.indexOf("n>", hasta + 1) + 2, yo.indexOf('<suggestion id="'+id, hasta + 1));
+         console.log("HOLI! "+dentro);
+        var j = dentro.indexOf('<');
+        while (j!=-1)
+        {
+          dentro = dentro.substring(0,j)+ dentro.substring(dentro.indexOf('>')+1);
+         
+          var j = dentro.indexOf('<');
+        }
+        message = "<p> insertó " + dentro + " </p>";
+        console.log(message);
       } else {
-        message = "<p> eliminó " + yo.substring(yo.indexOf("n>", hasta + 1) + 2, yo.indexOf("<suggestion", hasta + 1)) + " </p>";
+        dentro =yo.substring(yo.indexOf("n>", hasta + 1) + 2, yo.indexOf('<suggestion id="'+id, hasta + 1));
+         console.log("HOLI! "+dentro);
+        var j = dentro.indexOf('<');
+        while (j!=-1)
+        {
+          dentro = dentro.substring(0,j)+ dentro.substring(dentro.indexOf('>')+1);
+         
+          var j = dentro.indexOf('<');
+        }
+        message = "<p> eliminó " + dentro + " </p>";
+        console.log(message);
       }
 
       //suggestion end 
-      var n = yo.indexOf('<suggestion id="', n + size);
-      var hasta = yo.indexOf(':', n);
-      var id = yo.substring(n + size, hasta);
-      var hasta_id = yo.indexOf('"', hasta);
-      var idUser = yo.substring(hasta + 1, hasta_id);
-      yo = yo.substring(0, hasta) +
-        yo.substring(hasta_id);
+      var n_otro = yo.indexOf('<suggestion id="'+id, n + size);
+      var hasta_otro = yo.indexOf(':', n_otro);
+      var id_ptrp_otro = yo.substring(n_otro + size, hasta_otro);
+      var hasta_id_otro = yo.indexOf('"', hasta_otro);
+      var idUser = yo.substring(hasta_otro + 1, hasta_id_otro);
+      yo = yo.substring(0, hasta_otro) +
+        yo.substring(hasta_id_otro);
 
       //Siguiente suggestion
       var n = yo.indexOf('<suggestion id="', n + size);
@@ -74,7 +107,7 @@ router.post('/', async (req, res) => {
       console.log(id);
       console.log(idUser);
       console.log(type);
-      console.log(message);
+      //console.log(message);
       console.log(yo);
 
       //Buscar la fecha
@@ -96,15 +129,26 @@ router.post('/', async (req, res) => {
         content: message,
         createdAt: fecha
       };
-    
+      let ya=true;
       for (const v of req.body.commets)
       {
         console.log (v);
         if (v["threadId"]===id)
         {
           v["comments"].push(comentario);
+          ya=false;
         }
       }
+      if (ya)
+      {
+        req.body.commets.push(
+          {
+            threadId: id,
+            comments: comentario
+          }
+        )
+      }
+      
     //  req.body.commets.id.comments.push(comentario);
       // break;
     }
@@ -176,57 +220,122 @@ router.put('/:id', async (req, res) => {
   try {
     let newData = req.body;
     let id_este = req.params.id;
-    let yo = req.body.content;
+    let yo = req.body.content+"";
 
     var n = yo.indexOf('<suggestion id="');
     var size = '<suggestion id="';
     size = size.length;
-    console.log("JA"+req.body);
+    console.log("JA"+yo);
     while (n != -1) {
       var hasta = yo.indexOf(':', n);
+      var inte = yo.indexOf(' type="',n);
+      var typeE = yo.substring(inte,yo.indexOf ('"',inte+'type="'.length+1)+1 );
+      while (typeE != ' type="start"'  && n != -1)
+      {
+        console.log("BUEN"+typeE)
+        var n = yo.indexOf('<suggestion id="', n + size);
+        hasta = yo.indexOf(':', n);
+        inte = yo.indexOf(' type="',n);
+        typeE = yo.substring(inte,yo.indexOf ('"',inte+' type="'.length+1)+1 );
+      }
+      if (n == -1)
+        break;
       var id = yo.substring(n + size, hasta);
       var hasta_id = yo.indexOf('"', hasta);
       var idUser = yo.substring(hasta + 1, hasta_id);
+      //quitar el id user
       yo = yo.substring(0, hasta) +
         yo.substring(hasta_id);
-      //console.log(  yo.substring(hasta+1));
+
       var desde_type = yo.indexOf('"', hasta + 1);
       var type = yo.substring(desde_type + 1, yo.indexOf('"', desde_type + 1));
+
+      //mensage
       var message;
       if (type == "insertion") {
-        message = "<p> insertó " + yo.substring(yo.indexOf("n>", hasta + 1) + 2, yo.indexOf("<suggestion", hasta + 1)) + " </p>";
+      console.log(yo);
+        dentro =yo.substring(yo.indexOf("n>", hasta + 1) + 2, yo.indexOf('<suggestion id="'+id, hasta + 1));
+         console.log("HOLI! "+dentro);
+        var j = dentro.indexOf('<');
+        while (j!=-1)
+        {
+          dentro = dentro.substring(0,j)+ dentro.substring(dentro.indexOf('>')+1);
+         
+          var j = dentro.indexOf('<');
+        }
+        message = "<p> insertó " + dentro + " </p>";
+        console.log(message);
       } else {
-        message = "<p> eliminó " + yo.substring(yo.indexOf("n>", hasta + 1) + 2, yo.indexOf("<suggestion", hasta + 1)) + " </p>";
+        dentro =yo.substring(yo.indexOf("n>", hasta + 1) + 2, yo.indexOf('<suggestion id="'+id, hasta + 1));
+         console.log("HOLI! "+dentro);
+        var j = dentro.indexOf('<');
+        while (j!=-1)
+        {
+          dentro = dentro.substring(0,j)+ dentro.substring(dentro.indexOf('>')+1);
+         
+          var j = dentro.indexOf('<');
+        }
+        message = "<p> eliminó " + dentro + " </p>";
+        console.log(message);
       }
+
+      //suggestion end 
+      var n_otro = yo.indexOf('<suggestion id="'+id, n + size);
+      var hasta_otro = yo.indexOf(':', n_otro);
+      var id_ptrp_otro = yo.substring(n_otro + size, hasta_otro);
+      var hasta_id_otro = yo.indexOf('"', hasta_otro);
+      var idUser = yo.substring(hasta_otro + 1, hasta_id_otro);
+      yo = yo.substring(0, hasta_otro) +
+        yo.substring(hasta_id_otro);
+
+      //Siguiente suggestion
       var n = yo.indexOf('<suggestion id="', n + size);
-      var hasta = yo.indexOf(':', n);
-      var id = yo.substring(n + size, hasta);
-      var hasta_id = yo.indexOf('"', hasta);
-      var idUser = yo.substring(hasta + 1, hasta_id);
-      yo = yo.substring(0, hasta) +
-        yo.substring(hasta_id);
-      var n = yo.indexOf('<suggestion id="', n + size);
+
       console.log(id);
       console.log(idUser);
       console.log(type);
-      console.log(message);
+      //console.log(message);
       console.log(yo);
+
+      //Buscar la fecha
+      var fecha;
+      for (const v of req.body.trackChanges)
+      {
+        console.log(v);
+        if (v.id === id)
+        {
+          fecha = v.createdAt;
+        }
+
+      }
+
+      //Crear y agregar comentario
       var comentario ={
         authorId: idUser,
         commentId: randomString(),
         content: message,
-        createdAt: "2020-04-25T19:47:48.361Z"
+        createdAt: fecha
       };
-      console.log("JA"+req.body);
-      console.log("JA"+req.body.commets);
+      let ya=true;
       for (const v of req.body.commets)
       {
         console.log (v);
         if (v["threadId"]===id)
         {
           v["comments"].push(comentario);
+          ya=false;
         }
       }
+      if (ya)
+      {
+        req.body.commets.push(
+          {
+            threadId: id,
+            comments: comentario
+          }
+        )
+      }
+      
     //  req.body.commets.id.comments.push(comentario);
       // break;
     }

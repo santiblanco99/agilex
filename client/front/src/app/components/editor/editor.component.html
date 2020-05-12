@@ -1,16 +1,16 @@
 <div class-="body" *ngIf="dataReady">
   <nav class="navbar navbar-light bg-light">
-
+    
     <form class="form-inline" (ngSubmit)="onClicked(f)" #f="ngForm">
       <div class="form-group mb-2">
         <label for="staticField" class="sr-only">Título</label>
-        <input type="text" readonly class="form-control-plaintext" id="staticField" value="Título del documento">
+        <input type="text" readonly class="form-control-plaintext" id="staticField" value="Título del documento" [disabled]="disable()">
       </div>
 
       <div class="form-group mx-sm-3 mb-2">
         <label for="inputTitle" class="sr-only">Title</label>
         <input type="text" class="form-control" id="inputTitle" placeholder="Título" [(ngModel)]="docTitle"
-          name="titulo">
+          name="titulo"  [disabled]="disable()">
       </div>
       <button type="submit" class="btn btn-primary mb-2">{{bottonName}}</button>
     </form>
