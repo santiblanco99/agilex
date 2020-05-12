@@ -17,6 +17,7 @@ import { DocuSignData } from 'src/app/models/DocusignData.js';
 import * as html2pdf from 'html2pdf.js'
 import { PdfData } from 'src/app/models/PdfData.js';
 import { getLoadSaveIntegration } from './load-save-integration';
+import { ReturnStatement } from '@angular/compiler';
 
 @Component({
 	selector: 'app-editor',
@@ -58,6 +59,7 @@ export class EditorComponent {
 
 	public online: String[];
 
+
 	public correoAgilex = 'agilexgroupcol@gmail.com';
 
 	public userReady = false;
@@ -76,7 +78,7 @@ export class EditorComponent {
 		presenceList: {
 			container: this.presenceList,
 		},
-		
+
 
 	};
 
@@ -176,7 +178,7 @@ export class EditorComponent {
 					}
 					//this.data = doc.content;
 					//this.data = result.content;
-						//this.data=" ";
+					//this.data=" ";
 					this.miData = doc.content;
 
 					this.bottonName = 'Actualizar';
@@ -217,22 +219,21 @@ export class EditorComponent {
 		console.log("NO MAMES" + this.Editor.plugins);
 
 
-		}
+	}
 
 
 	public onChange({ editor }: ChangeEvent) {
-		
+
 		const usersPlugin = editor.plugins.get('Users');
 		const trackPlugin = editor.plugins.get('TrackChanges');
 		const commetsPlugin = editor.plugins.get('CommentsRepository');
 		this.currentState = editor.getData();
 		//editor.execute( 'trackChanges' );
-		console.log(this.userReady+" HELP");
+		console.log(this.userReady + " HELP");
 		//La primera vez que se edita
-		if (!this.userReady  )
-		{
-			this.userReady =true;
-			
+		if (!this.userReady) {
+			this.userReady = true;
+
 			//Agregar nombre e email
 			usersPlugin.me.name = this.loggedUser.email;
 			usersPlugin.me.id = this.loggedUser.email;
@@ -268,7 +269,7 @@ export class EditorComponent {
 
 			//Agregar comentarios
 			if (this.comments != null && this.comments != undefined) {
-				
+
 				console.log(commetsPlugin.getCommentThreads());
 				for (const v in this.comments) {
 					try {
@@ -283,17 +284,15 @@ export class EditorComponent {
 				}
 				console.log(commetsPlugin.getCommentThreads());
 			}
-			try
-			{
-				editor.data.set( this.miData, { suppressErrorInCollaboration: true } );
-			}catch (error)
-			{
+			try {
+				editor.data.set(this.miData, { suppressErrorInCollaboration: true });
+			} catch (error) {
 
 			}
 		}
 		// Por si algun momento sirve track changes 
 		if (!this.userReady && false) {
-			
+
 
 			if (this.trackChanges != null && this.trackChanges != undefined) {
 				for (const v in this.trackChanges) {
@@ -346,7 +345,7 @@ export class EditorComponent {
 
 
 
-		
+
 		if (editor.plugins.get('CommentsRepository') != null ||
 			editor.plugins.get('CommentsRepository').getCommentThreads() != null)
 			this.comments = editor.plugins.get('CommentsRepository').getCommentThreads();
@@ -357,7 +356,7 @@ export class EditorComponent {
 	}
 	compartir() {
 
-		if(this.doc == null){
+		if (this.doc == null) {
 			alert('debes guardar el documento primero');
 			return;
 		}
@@ -365,20 +364,18 @@ export class EditorComponent {
 		var random = randomString();
 		var esta = false;
 		if (correo != null && correo != "")
-		for (const v in this.guest )
-		{
-			console.log(this.guest);
-			console.log("VEA "+v);
-			if (this.guest[v] == correo)
-			{
-				esta=true;
-			this.mailService.sendMail(correo, this.docTitle, this.doc.id, v, this.loggedUser.email).subscribe(email => {
-				console.log(email);
-			});
+			for (const v in this.guest) {
+				console.log(this.guest);
+				console.log("VEA " + v);
+				if (this.guest[v] == correo) {
+					esta = true;
+					this.mailService.sendMail(correo, this.docTitle, this.doc.id, v, this.loggedUser.email).subscribe(email => {
+						console.log(email);
+					});
+				}
+
 			}
-				
-		}
-		if (correo != null && correo != "" && !esta)  {
+		if (correo != null && correo != "" && !esta) {
 			if (this.guest == undefined || this.guest == null) {
 				this.guest = new Map();
 			}
@@ -401,6 +398,50 @@ export class EditorComponent {
 			alert("El link es: " + "http://localhost:4200/guest/" + this.doc.id + "/" + random);
 		}
 
+
+	}
+
+	compartirProvisional() {
+		if (this.doc == null) {
+			alert('debes guardar el documento primero');
+			return;
+		}
+		let correo = prompt("Correo al que desea compartir", "");
+		if (correo != null && correo != "") {
+			let doc;
+			this.documentService.getDocumentById(this.doc.id.toString()).subscribe(result => {
+				console.log(result);
+				doc = result;
+				let shared = doc.shared;
+				if (shared.length == 0) {
+					shared.push(correo);
+					doc.shared = shared;
+					this.documentService.putDocument(doc).subscribe(update => {
+						console.log('Shared updated, array legnth 0');
+						alert(`Documento compartido con ${correo}`);
+					});
+				}
+				else {
+					console.log(shared);
+					var i = 0;
+					while( i< shared.length){
+						if(shared[i] == correo){
+							alert('Ya se compartió el documento con ese correo previamente');
+							return;
+						}
+						i++;
+					}
+					console.log('siguió')
+					shared.push(correo);
+					doc.shared = shared;
+					this.documentService.putDocument(doc).subscribe(update => {
+						console.log('Shared updated');
+						alert(`Documento compartido con ${correo}`);
+					});
+				}
+			});
+
+		}
 
 	}
 
@@ -427,7 +468,8 @@ export class EditorComponent {
 			if (this.comments == undefined) {
 				this.comments = [new Map()];
 			}
-			let newDoc = new Doc(this.guest, this.currentState, date, this.loggedUser.email, this.docTitle, this.online, this.trackChanges, this.comments);
+			let shared = [];
+			let newDoc = new Doc(this.guest, this.currentState, date, this.loggedUser.email, this.docTitle, this.online, this.trackChanges, this.comments, shared);
 			this.doc = newDoc;
 			console.log('doc data:' + this.currentState);
 			this.documentService.postDocument(this.doc).subscribe(result => {
@@ -465,25 +507,25 @@ export class EditorComponent {
 		this.isDisabled = !this.isDisabled;
 	}
 
-	generateSignature(){
-		let data = new DocuSignData([this.loggedUser.nombre],[this.loggedUser.email],[],[],this.currentState);
-		this.docSignService.getSignature(data).subscribe(result =>{
+	generateSignature() {
+		let data = new DocuSignData([this.loggedUser.nombre], [this.loggedUser.email], [], [], this.currentState);
+		this.docSignService.getSignature(data).subscribe(result => {
 			console.log(result);
-			alert('Petición de firma generada al correo ' + this.loggedUser.email );
+			alert('Petición de firma generada al correo ' + this.loggedUser.email);
 		});
 
 	}
 
-	toPdf(){
+	toPdf() {
 		if (this.currentState == null) {
 			this.currentState = this.data;
 		}
 		var docId = this.route.snapshot.params.id;
 
 		let data = new PdfData(docId, this.currentState);
-		this.docSignService.createpdf(data).subscribe(result =>{
+		this.docSignService.createpdf(data).subscribe(result => {
 			console.log(result);
-			alert('Petición de creación pdf' + this.loggedUser.email );
+			alert('Petición de creación pdf' + this.loggedUser.email);
 		})
 	}
 

@@ -130,7 +130,8 @@ router.post('/', async (req, res) => {
       guest: req.body.guest,
       online: req.body.online,
       trackChanges: req.body.trackChanges,
-      commets: req.body.commets
+      commets: req.body.commets,
+      shared: req.body.shared
     });
 
 
