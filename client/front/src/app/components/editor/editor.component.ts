@@ -125,7 +125,8 @@ export class EditorComponent {
 				if (this.online == undefined) {
 					this.online = [];
 				}
-				this.online.push(this.loggedUser.email);
+				if (!(this.loggedUser.email in this.online))
+					this.online.push(this.loggedUser.email);
 
 			});
 		}
@@ -167,7 +168,8 @@ export class EditorComponent {
 
 					try {
 						this.online = doc.online;
-						this.online.push(this.loggedUser.email);
+						if (!(this.loggedUser.email in this.online))
+							this.online.push(this.loggedUser.email);
 						this.documentService.putDocument(this.doc).subscribe(result => {
 							console.log('doc updated with id ' + result.id);
 							this.doc = result;
@@ -218,7 +220,8 @@ export class EditorComponent {
 					if (this.route.snapshot.params.id2 in this.guest) {
 						this.loggedUser = new User();
 						this.loggedUser.email = this.guest[this.route.snapshot.params.id2];
-						this.online.push(this.loggedUser.email);
+						if (!(this.loggedUser.email in this.online))
+							this.online.push(this.loggedUser.email);
 						this.trackChanges = doc.trackChanges;
 						doc.online = this.online;
 						this.documentService.putDocument(this.doc).subscribe(result => {
@@ -521,7 +524,8 @@ export class EditorComponent {
 			this.doc.lastEdited = new Date(Date.now());
 			if (this.online == undefined)
 				this.online = [];
-			this.online.push(this.loggedUser.email);
+			if (!(this.loggedUser.email in this.online))
+				this.online.push(this.loggedUser.email);
 			this.doc.guest = this.guest;
 			this.doc.online = this.online;
 			this.documentService.putDocument(this.doc).subscribe(result => {
