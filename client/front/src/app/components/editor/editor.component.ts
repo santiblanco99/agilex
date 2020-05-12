@@ -64,6 +64,7 @@ export class EditorComponent {
 	public miData;
 	public trackChanges;
 	public comments;
+	public disabled=false;
 
 	// Application data will be available under a global variable `appData`.
 	private appData = {
@@ -187,7 +188,7 @@ export class EditorComponent {
 		//Invitado
 		else {
 			console.log('Guest');
-
+			this.disabled=true;
 			if (docId != null && docId != undefined) {
 				console.log('loading previous info');
 				this.documentService.getDocumentById(docId).subscribe(doc => {
@@ -210,6 +211,7 @@ export class EditorComponent {
 					this.doc.guest = this.guest;
 					this.doc.online = this.online;
 					this.comments = doc.commets;
+					this.docTitle = doc.name;
 
 					if (this.route.snapshot.params.id2 in this.guest) {
 						this.loggedUser = new User();
@@ -236,7 +238,7 @@ export class EditorComponent {
 
 
 		}
-		console.log("NO MAMES" + this.Editor.plugins);
+		//console.log("NO MAMES" + this.Editor.plugins);
 
 
 		}
@@ -373,10 +375,15 @@ export class EditorComponent {
 		if (editor.plugins.get('CommentsRepository') != null ||
 			editor.plugins.get('CommentsRepository').getCommentThreads() != null)
 			this.comments = editor.plugins.get('CommentsRepository').getCommentThreads();
-		console.log(editor.plugins.get('TrackChanges').getSuggestions());
+		//console.log(editor.plugins.get('TrackChanges').getSuggestions());
 		if (editor.plugins.get('TrackChanges') != null ||
 			editor.plugins.get('TrackChanges').getSuggestions() != null)
 			this.trackChanges = editor.plugins.get('TrackChanges').getSuggestions();
+	}
+	disable()
+	{
+		//console.log("DEBE ESTAR  "+this.disable);
+		return this.disabled;
 	}
 	compartir() {
 

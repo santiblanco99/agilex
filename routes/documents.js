@@ -219,7 +219,7 @@ router.put('/:id', async (req, res) => {
   try {
     let newData = req.body;
     let id_este = req.params.id;
-    let yo = req.body.content;
+    let yo = req.body.content+"";
 
     var n = yo.indexOf('<suggestion id="');
     var size = '<suggestion id="';
