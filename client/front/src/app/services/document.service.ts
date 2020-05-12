@@ -20,6 +20,10 @@ export class DocumentService {
     return this.http.get<Doc[]>('http://localhost:5000/documents');
   }
 
+  getSharedDocuments(val:string):Observable<Doc[]>{
+    return this.http.get<Doc[]>(`http://localhost:5000/documents/shared/${val}`);
+  }
+
   postDocument(doc:Doc):Observable<Doc> {
     console.log('saving doc');
     return this.http.post<Doc>('http://localhost:5000/documents',doc,httpOptions);

@@ -21,11 +21,19 @@ export class DocumentsComponent implements OnInit {
   documents: Doc[];
 
   ngOnInit(): void {
+    this.documents = [];
 
     var email = this.authService.getUserEmail();
     if(email != null && email != undefined){
       this.documentService.getMyDocuments(email).subscribe(docs=>{
-        this.documents = docs;
+        docs.forEach(element=>{
+          this.documents.push(element);
+        })
+      });
+      this.documentService.getSharedDocuments(email).subscribe(result =>{
+        result.forEach(element=>{
+          this.documents.push(element);
+        })
       });
   }
   }
