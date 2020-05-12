@@ -64,6 +64,25 @@ export class EditorComponent {
 	public miData;
 	public trackChanges;
 	public comments;
+
+	// Application data will be available under a global variable `appData`.
+	private appData = {
+		// The ID of the current user.
+		userId: 'user-1',
+		// Users data.
+		users: [
+			
+		],
+		// Suggestion threads data.
+		suggestions: [
+		
+		],
+		// Comment threads data.
+		commentThreads: [
+			
+		]
+	};
+
 	public config = {
 		cloudServices: {
 			uploadUrl: 'https://70531.cke-cs.com/easyimage/upload/',
@@ -76,6 +95,9 @@ export class EditorComponent {
 		presenceList: {
 			container: this.presenceList,
 		},
+		extraPlugins: [
+			getLoadSaveIntegration( this.appData )
+		]
 		
 
 	};
@@ -83,7 +105,7 @@ export class EditorComponent {
 	constructor(private documentService: DocumentService, private authService: AuthService, private userService: UserService, private mailService: MailService, private route: ActivatedRoute, private docSignService: DocusignService) {
 
 	};
-
+	
 	ngOnInit(): void {
 		this.bottonName = 'Guardar';
 
@@ -227,7 +249,8 @@ export class EditorComponent {
 		const commetsPlugin = editor.plugins.get('CommentsRepository');
 		this.currentState = editor.getData();
 		//editor.execute( 'trackChanges' );
-		console.log(this.userReady+" HELP");
+		//console.log(this.userReady+" HELP");
+
 		//La primera vez que se edita
 		if (!this.userReady  )
 		{
