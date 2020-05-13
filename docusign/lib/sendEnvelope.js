@@ -108,8 +108,14 @@ function createEnvelope(args){
 
   // create a signer recipient to sign the document, identified by name and email
   // We're setting the parameters via the object creation
-  let signer_1 = docusign.Signer.constructFromObject({email: args.signerEmails[0],
-    name: args.signerNames[0], recipientId: '1', routingOrder: '1'});
+  var signers = [];
+  for(var i = 0; i< args.signerEmails.length; i++){
+    let currentSigner = docusign.Signer.constructFromObject({email: args.signerEmails[i],
+      name: args.signerNames[i], recipientId: (i+1).toString(), routingOrder: (i+1).toString()});
+      signers.push(currentSigner);
+  }
+  // let signer_1 = docusign.Signer.constructFromObject({email: args.signerEmails[0],
+  //   name: args.signerNames[0], recipientId: '1', routingOrder: '1'});
   // let signer_2 = docusign.Signer.constructFromObject({email: args.signerEmails[1],
   //     name: args.signerNames[1], recipientId: '2', routingOrder: '2'});
   // routingOrder (lower means earlier) determines the order of deliveries
@@ -148,9 +154,9 @@ function createEnvelope(args){
     ;
 
   // Tabs are set per recipient / signer
-  let signer_1_tabs = docusign.Tabs.constructFromObject({
-    signHereTabs: [sign_here_1, sign_here_2]});
-  signer_1.tabs = signer_1_tabs;
+  // let signer_1_tabs = docusign.Tabs.constructFromObject({
+  //   signHereTabs: [sign_here_1, sign_here_2]});
+  // signer_1.tabs = signer_1_tabs;
 
   // let signer_2_tabs = docusign.Tabs.constructFromObject({
   //   signHereTabs: [sign_here_1,sign_here_2]});
@@ -158,7 +164,7 @@ function createEnvelope(args){
 
   // Add the recipients to the envelope object
   let recipients = docusign.Recipients.constructFromObject({
-    signers: [signer_1],
+    signers: signers,
     carbonCopies: []});
   env.recipients = recipients;
 

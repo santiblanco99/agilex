@@ -225,6 +225,32 @@ router.get('/:id', async function (req, res) {
 });
 
 
+//route to get shared documents
+router.get('/shared/:id',(req,res)=>{
+  let id = req.params.id;
+  db.collection('documents').get()
+  .then((snapshot) => {
+    var resp = [];
+    snapshot.forEach((doc) => {
+      console.log(doc.id, '=>', doc.data());
+      var document = doc.data();
+      document.id = doc.id;
+      let shared = document.shared;
+      shared.forEach(element =>{
+        if(element == id){
+          resp.push(document);
+        }
+      });
+    });
+    res.send(resp);
+  })
+  .catch((err) => {
+    console.log('Error getting documents', err);
+  });
+
+});
+
+
 router.put('/:id', async (req, res) => {
   try {
     

@@ -18,6 +18,7 @@ import * as html2pdf from 'html2pdf.js'
 import { PdfData } from 'src/app/models/PdfData.js';
 import { getLoadSaveIntegration } from './load-save-integration';
 import { ReturnStatement } from '@angular/compiler';
+import { element } from 'protractor';
 
 @Component({
 	selector: 'app-editor',
@@ -66,7 +67,7 @@ export class EditorComponent {
 	public miData;
 	public trackChanges;
 	public comments;
-	public disabled=false;
+	public disabled = false;
 
 	// Application data will be available under a global variable `appData`.
 	private appData = {
@@ -74,15 +75,15 @@ export class EditorComponent {
 		userId: 'user-1',
 		// Users data.
 		users: [
-			
+
 		],
 		// Suggestion threads data.
 		suggestions: [
-		
+
 		],
 		// Comment threads data.
 		commentThreads: [
-			
+
 		]
 	};
 
@@ -99,16 +100,16 @@ export class EditorComponent {
 			container: this.presenceList,
 		},
 		extraPlugins: [
-			getLoadSaveIntegration( this.appData )
+			getLoadSaveIntegration(this.appData)
 		]
-		
+
 
 	};
 
 	constructor(private documentService: DocumentService, private authService: AuthService, private userService: UserService, private mailService: MailService, private route: ActivatedRoute, private docSignService: DocusignService) {
 
 	};
-	
+
 	ngOnInit(): void {
 		this.bottonName = 'Guardar';
 
@@ -192,7 +193,7 @@ export class EditorComponent {
 		//Invitado
 		else {
 			console.log('Guest');
-			this.disabled=true;
+			this.disabled = true;
 			if (docId != null && docId != undefined) {
 				console.log('loading previous info');
 				this.documentService.getDocumentById(docId).subscribe(doc => {
@@ -389,8 +390,7 @@ export class EditorComponent {
 			editor.plugins.get('TrackChanges').getSuggestions() != null)
 			this.trackChanges = editor.plugins.get('TrackChanges').getSuggestions();
 	}
-	disable()
-	{
+	disable() {
 		//console.log("DEBE ESTAR  "+this.disable);
 		return this.disabled;
 	}
@@ -464,8 +464,8 @@ export class EditorComponent {
 				else {
 					console.log(shared);
 					var i = 0;
-					while( i< shared.length){
-						if(shared[i] == correo){
+					while (i < shared.length) {
+						if (shared[i] == correo) {
 							alert('Ya se compartió el documento con ese correo previamente');
 							return;
 						}
@@ -549,11 +549,35 @@ export class EditorComponent {
 	}
 
 	generateSignature() {
-		let data = new DocuSignData([this.loggedUser.nombre], [this.loggedUser.email], [], [], this.currentState);
-		this.docSignService.getSignature(data).subscribe(result => {
-			console.log(result);
-			alert('Petición de firma generada al correo ' + this.loggedUser.email);
+		let signerEmails = [];
+		let signerNames = [];
+		this.documentService.getDocumentById(this.doc.id.toString()).subscribe(result => {
+			this.userService.getDocumentById(result.author.toString()).subscribe(author => {
+				signerNames.push(author.nombre);
+				signerEmails.push(author.email);
+				for (var i = 0; i < result.shared.length; i++) {
+					let element = result.shared[i];
+					console.log('entre a shared');
+					console.log(element);
+					this.userService.getDocumentById(element.toString()).subscribe(user => {
+						signerEmails.push(element);
+						signerNames.push(user.nombre);
+						console.log(signerNames);
+						console.log(signerEmails);
+						if (signerNames.length == result.shared.length + 1) {
+							let data = new DocuSignData(signerNames, signerEmails, [], [], this.currentState);
+							this.docSignService.getSignature(data).subscribe(result => {
+								console.log(result);
+								alert('Petición de firma generada al correo ' + this.loggedUser.email);
+							});
+						}
+					});
+				}
+
+			});
+
 		});
+
 
 	}
 
