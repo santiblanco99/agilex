@@ -406,7 +406,7 @@ router.put('/:id', async (req, res) => {
     
     let newData = req.body;
     let id1 = req.params.id;
-    console.log(req.body.commets[0].comments[1]);
+    //console.log(req.body.commets[0].comments[1]);
     console.log(id1);
     let setDoc = await db.collection('documents').doc(id1).set(newData);
     console.log(setDoc);
