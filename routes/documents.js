@@ -152,7 +152,16 @@ router.post('/', async (req, res) => {
     //  req.body.commets.id.comments.push(comentario);
       // break;
     }
-
+    var to=[];
+    for (const v of req.body.commets)
+    {
+      console.log (v);
+      if (v["comments"].length!=0)
+      {
+        to.push(v);
+      }
+    }
+    req.body.commets=to;
     yo = yo.split("suggestion").join("comment");
   
     yo = yo.split('comment-type="insertion"  type="start"')
@@ -218,8 +227,7 @@ router.get('/:id', async function (req, res) {
 
 router.put('/:id', async (req, res) => {
   try {
-    let newData = req.body;
-    let id_este = req.params.id;
+    
     let yo = req.body.content+"";
 
     var n = yo.indexOf('<suggestion id="');
@@ -299,8 +307,10 @@ router.put('/:id', async (req, res) => {
 
       //Buscar la fecha
       var fecha;
+      console.log("tRACK");
       for (const v of req.body.trackChanges)
       {
+        console.log("ENTRE");
         console.log(v);
         if (v.id === id)
         {
@@ -308,7 +318,8 @@ router.put('/:id', async (req, res) => {
         }
 
       }
-
+      if (fecha==undefined)
+        fecha="2020-05-13T01:51:48.952Z";
       //Crear y agregar comentario
       var comentario ={
         authorId: idUser,
@@ -322,6 +333,8 @@ router.put('/:id', async (req, res) => {
         console.log (v);
         if (v["threadId"]===id)
         {
+          console.log("comentaro");
+          console.log(v);
           v["comments"].push(comentario);
           ya=false;
         }
@@ -339,8 +352,17 @@ router.put('/:id', async (req, res) => {
     //  req.body.commets.id.comments.push(comentario);
       // break;
     }
-
-   yo = yo.split("suggestion").join("comment");
+    var to=[];
+    for (const v of req.body.commets)
+    {
+      console.log (v);
+      if (v["comments"].length!=0)
+      {
+        to.push(v);
+      }
+    }
+    req.body.commets=to;
+    yo = yo.split("suggestion").join("comment");
   
     yo = yo.split('comment-type="insertion"  type="start"')
     .join('style="background:var(--ck-color-suggestion-marker-insertion-background);"');
@@ -349,15 +371,23 @@ router.put('/:id', async (req, res) => {
     .join( 'style="background:var(--ck-color-suggestion-marker-deletion-background);"> <s');
     yo = yo.split('comment-type="deletion" type="end">').join("></s>");
     yo = yo.split('comment-type="insertion"').join("");
+    yo = yo.split('  type=').join(" type=");
+    console.log("yo");
     console.log(yo);
     req.body.content= yo;
     req.body.trackChanges= [];
-    let setDoc = await db.collection('documents').doc(id_este).set(newData);
+    console.log("body");
+    
+    let newData = req.body;
+    let id1 = req.params.id;
+    console.log(req.body.commets[0].comments[1]);
+    console.log(id1);
+    let setDoc = await db.collection('documents').doc(id1).set(newData);
     console.log(setDoc);
-    var ans = db.collection('documents').doc(id_este);
+    var ans = db.collection('documents').doc(id1);
     var doc = await ans.get();
     let resp = doc.data();
-    resp.id_este = doc.id_este;
+    resp.id = doc.id;
     res.json(resp);
   }
   catch (e) {
