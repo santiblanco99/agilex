@@ -281,11 +281,11 @@ export class EditorComponent {
 			});
 
 			//Agregar demás usuarios
-			for (const v in this.guest) {
+			for (const v of this.shared) {
 				try {
 					usersPlugin.addUser({
-						id: this.guest[v],
-						name: this.guest[v]
+						id: v,
+						name: v
 					});
 				}
 				catch (err) {
