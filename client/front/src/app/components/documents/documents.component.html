@@ -11,8 +11,8 @@
                 
                     <button class="btn btn-primary btn-block" data-toggle="collapse" href="#fileInputCollapse" role="button" aria-expanded="false" aria-controls="fileInputCollapse">Subir archivo</button>
                     <div class="collapse" id="fileInputCollapse">
-                        <input type="file" class="form-control-file" id="fileInput">
-    
+                        <input type="file" class="form-control-file" id="input" (change)="subirArchivo($event.target.files)">
+
                     </div>
                     <button class="btn btn-secondary btn-block" [routerLink]="['/newDocument']">Crear nuevo</button>
                 </div>

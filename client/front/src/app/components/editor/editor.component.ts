@@ -14,7 +14,6 @@ import { ActivatedRoute } from '@angular/router';
 import { Mail } from '../../models/mail';
 import { DocusignService } from 'src/app/services/docusign.service.js';
 import { DocuSignData } from 'src/app/models/DocusignData.js';
-import * as html2pdf from 'html2pdf.js'
 import { PdfData } from 'src/app/models/PdfData.js';
 import { getLoadSaveIntegration } from './load-save-integration';
 import { ReturnStatement } from '@angular/compiler';

@@ -4,6 +4,7 @@ import {Doc} from 'src/app/models/document';
 import { User } from '../../auth/user';
 import { UserService } from '../../services/user.service';
 import { AuthService } from '../../auth/auth.service';
+import * as mammoth from 'mammoth/mammoth.browser'
 
 @Component({
   selector: 'app-documents',
@@ -19,6 +20,31 @@ export class DocumentsComponent implements OnInit {
   constructor(private documentService:DocumentService, private authService: AuthService) { }
 
   documents: Doc[];
+  html: String;
+
+  
+
+  subirArchivo(files: FileList){
+    
+    
+    var fileToUpload = files[0];
+    console.log(fileToUpload)
+    
+    var buffer1 = fileToUpload.arrayBuffer().then(function(result){
+      console.log(result)
+      
+      mammoth.convertToHtml({arrayBuffer: result})
+    .then(function(result2){
+         var html = result2.value; // The generated HTML
+         var messages = result2.messages; // Any messages, such as warnings during conversion
+        console.log(html)
+        return html
+     })
+    .done();
+    });   
+  }
+  
+
 
   ngOnInit(): void {
     this.documents = [];
