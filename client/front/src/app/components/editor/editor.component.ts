@@ -67,6 +67,7 @@ export class EditorComponent {
 	public trackChanges;
 	public comments;
 	public disabled = false;
+	public shared: String[];
 
 	// Application data will be available under a global variable `appData`.
 	private appData = {
@@ -154,6 +155,11 @@ export class EditorComponent {
 					} catch ({ error }) {
 
 					}
+					try {
+						this.shared = doc.shared;
+					} catch ({ error }) {
+
+					}
 					this.documentService.putDocument(this.doc).subscribe(result => {
 						console.log('doc updated with id ' + result.id);
 						this.doc = result;
@@ -215,6 +221,7 @@ export class EditorComponent {
 					this.doc.guest = this.guest;
 					this.doc.online = this.online;
 					this.comments = doc.commets;
+					this.shared= doc.shared;
 					this.docTitle = doc.name;
 
 					if (this.route.snapshot.params.id2 in this.guest) {
@@ -508,6 +515,11 @@ export class EditorComponent {
 				this.comments = [new Map()];
 			}
 			let shared = [];
+			if (this.shared != undefined) 
+			{
+				shared=this.shared;
+			}
+			
 			let newDoc = new Doc(this.guest, this.currentState, date, this.loggedUser.email, this.docTitle, this.online, this.trackChanges, this.comments, shared);
 			this.doc = newDoc;
 			console.log('doc data:' + this.currentState);
@@ -528,6 +540,9 @@ export class EditorComponent {
 			this.doc.name = this.docTitle;
 			this.doc.content = this.currentState;
 			this.doc.lastEdited = new Date(Date.now());
+			this.doc.trackChanges = this.trackChanges;
+			this.doc.shared = this.shared;
+			this.doc.commets = this.comments;
 			if (this.online == undefined)
 				this.online = [];
 			if (!(this.loggedUser.email in this.online))
