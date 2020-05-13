@@ -260,6 +260,7 @@ export class EditorComponent {
 
 		//La primera vez que se edita
 		if (!this.userReady) {
+			editor.execute( 'trackChanges' );
 			this.userReady = true;
 
 			//Agregar nombre e email
@@ -311,6 +312,12 @@ export class EditorComponent {
 					}
 				}
 				console.log(commetsPlugin.getCommentThreads());
+				for (const v in commetsPlugin.getCommentThreads())
+				{
+					console.log(v);
+					console.log(commetsPlugin.getCommentThreads()[v])
+				}
+
 			}
 			try {
 				editor.data.set(this.miData, { suppressErrorInCollaboration: true });
